@@ -1,0 +1,1 @@
+export { Template, RenderIf} from './Template';

@@ -5,7 +5,7 @@ interface TemplateProps{
     loading?: boolean;
 }
 
-export default function Template({children, loading}: TemplateProps){
+export const  Template: React.FC<TemplateProps> = ({children, loading=false}: TemplateProps) =>{
     return(
         <div className="flex flex-col min-h-screen">
             <Header/>
@@ -34,13 +34,13 @@ const Header = () => {
                 <a href="#adoption-report" className="hover:text-blue-300 transition-all duration-300">Adoption Reports</a>
                 <a href="#settings" className="hover:text-blue-300 transition-all duration-300">Settings</a>
              
-                <button className="relative focus:outline-none">
+                <button className="focus:outline-none">
                     <img 
                     src="https://via.placeholder.com/40" 
                     alt="Avatar" 
                     className="w-10 h-10 rounded-full border-2 border-white object-cover"
                     />
-                </button>
+               </button>
             </nav>
          </RenderIf>
          
@@ -50,7 +50,7 @@ const Header = () => {
                 <a href="#adoption-status" className="hover:text-blue-300 transition-all duration-300">Adoption Status</a>
                 <a href="#profile" className="hover:text-blue-300 transition-all duration-300">My Profile</a>
                 <a href="#favorites" className="hover:text-blue-300 transition-all duration-300">Favorite Pets</a>
-               
+
                 <button className="focus:outline-none">
                     <img 
                     src="https://via.placeholder.com/40" 
@@ -65,10 +65,13 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button onClick={toggleMenu} className="md:hidden text-white focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
+            <div className="w-9 h-10 cursor-pointer flex flex-col items-center justify-center">
+                <div className={`w-[50%] h-[2px] bg-white rounded-sm transition-all duration-300 origin-left translate-y-[0.45rem] ${isMenuOpen ? 'rotate-[-45deg]' : ''}`}></div>
+                <div className={`w-[50%] h-[2px] bg-white rounded-md transition-all duration-300 origin-center ${isMenuOpen ? 'hidden' : ''}`}></div>
+                <div className={`w-[50%] h-[2px] bg-white rounded-md transition-all duration-300 origin-left -translate-y-[0.45rem] ${isMenuOpen ? 'rotate-[45deg]' : ''}`}></div>
+            </div>
+        </button>
+        
         </div>
   
         {/* Mobile Menu */}
