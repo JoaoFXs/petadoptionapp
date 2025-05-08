@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-
+import Link from 'next/link';
 interface TemplateProps {
     children?: React.ReactNode
     loading?: boolean;
@@ -18,16 +18,20 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isPerfilOpen, setIsPerfilOpen] = useState(false); // State to track if the profile menu is open
     const [userImage, setUserImage] = useState('https://contributors-img.web.app/image?repo=JoaoFXs/climasync'); // Placeholder for user image
     const [isAdmin, setIsAdmin] = useState(true); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
+    const openPerfilMenu = () => setIsPerfilOpen(!isPerfilOpen); // Function to open the profile menu
+    
     return (
         <header className="bg-green-200 text-green-900 shadow-md">
-            <div className="container mx-auto flex items-center justify-between p-4">
+      
+      <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
                 {/* Logo */}
+                <Link href='/'>
                 <div className="text-2xl font-semibold">Paw House</div>
-
+                </Link>
                 {/* Navbar */}
                 <RenderIf condition={isAdmin}>
                     <nav className="hidden md:flex  items-center  space-x-6">
@@ -36,8 +40,8 @@ const Header = () => {
                         <a href="#users-management" className="hover:text-yellow-400 transition-all duration-300">Manage Users</a>
                         <a href="#adoption-report" className="hover:text-yellow-400 transition-all duration-300">Adoption Reports</a>
                         <a href="#settings" className="hover:text-yellow-400 transition-all duration-300">Settings</a>
-                
-                        <button className="focus:outline-none min-w-10 min-h-10">
+
+                        <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
                             <img
                                 src={userImage}
                                 alt="Avatar"
@@ -97,17 +101,41 @@ const Header = () => {
                 </div>
             )}
           </RenderIf>
+
+          {isPerfilOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end">
+                <div className="w-64 bg-white shadow-lg p-4 h-full z-50">
+                    <button 
+                        onClick={openPerfilMenu} 
+                        className="text-gray-500 hover:text-black mb-4 ml-auto block"
+                    >
+                        ✖️
+                    </button>
+                    <div className="flex flex-col items-center">
+                        <img src={userImage} alt="Avatar" className="w-24 h-24 rounded-full mb-4" />
+                        <h3 className="text-xl font-semibold">João Felix</h3>
+                        <p className="text-sm text-gray-600 mb-4">joao@email.com</p>
+                        <nav className="w-full">
+                            <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">My Profile</a>
+                            <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                            <button className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">Exit</button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        )}
+
         </header>
     );
 };
 
 const Footer = () => {
     return (
-        <footer className="bg-yellow-100 text-green-900 items-center py-6 mt-12">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4">
-                <p className="text-center text-sm">Developed by João Felix,&copy; 2025. All rights reserved.</p>
-            </div>
-        </footer>
+      <footer className="bg-yellow-100 text-green-900 items-center py-6 border-t border-green-300">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4">
+            <p className="text-center text-sm">Developed by João Felix, &copy; 2025. All rights reserved.</p>
+        </div>
+    </footer>
     );
 };
 
