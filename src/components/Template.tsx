@@ -18,6 +18,7 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userImage, setUserImage] = useState('https://contributors-img.web.app/image?repo=JoaoFXs/climasync'); // Placeholder for user image
     const [isAdmin, setIsAdmin] = useState(true); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -35,12 +36,12 @@ const Header = () => {
                         <a href="#users-management" className="hover:text-yellow-400 transition-all duration-300">Manage Users</a>
                         <a href="#adoption-report" className="hover:text-yellow-400 transition-all duration-300">Adoption Reports</a>
                         <a href="#settings" className="hover:text-yellow-400 transition-all duration-300">Settings</a>
-
-                        <button className="focus:outline-none">
+                
+                        <button className="focus:outline-none min-w-10 min-h-10">
                             <img
-                                src="https://via.placeholder.com/40"
+                                src={userImage}
                                 alt="Avatar"
-                                className="w-10 h-10 rounded-full border-2 border-green-900 object-cover"
+                               className="w-10 h-10 rounded-full border-2 border-green-900 object-cover flex-shrink-0"
                             />
                         </button>
                     </nav>
@@ -53,9 +54,9 @@ const Header = () => {
                         <a href="#profile" className="hover:text-yellow-400 transition-all duration-300">My Profile</a>
                         <a href="#favorites" className="hover:text-yellow-400 transition-all duration-300">Favorite Pets</a>
 
-                        <button className="focus:outline-none">
+                        <button className="focus:outline-none min-w-10 min-h-10">
                             <img
-                                src="https://via.placeholder.com/40"
+                                src={userImage}
                                 alt="Avatar"
                                 className="w-10 h-10 rounded-full border-2 border-green-900 object-cover"
                             />
