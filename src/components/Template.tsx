@@ -105,11 +105,13 @@ const Header = () => {
                             My Profile
                         </a>
                         <a href="/settings" className="block px-4 py-2 rounded-md text-green-700 hover:bg-green-50 transition">
-                            Configurations
+                            Settings
                         </a>
-                        <button className="w-full text-left px-4 py-2 text-red-500 rounded-md hover:bg-red-50 transition">
-                            Exit
-                        </button>
+                            <button
+                                    className="block mx-auto mt-4 relative overflow-hidden rounded-md bg-red-700 px-5 py-2.5 text-white transition-all duration-300 
+                                            [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110"
+                                >Exit</button>
+                            
                         </nav>
                     </div>
                     </div>
