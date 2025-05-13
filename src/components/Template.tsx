@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import { NavBar } from './tools';
 import Link from 'next/link';
 interface TemplateProps {
     children?: React.ReactNode
@@ -20,7 +21,7 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPerfilOpen, setIsPerfilOpen] = useState(false); // State to track if the profile menu is open
     const [userImage, setUserImage] = useState('https://contributors-img.web.app/image?repo=JoaoFXs/climasync'); // Placeholder for user image
-    const [isAdmin, setIsAdmin] = useState(true); // State to track if the user is an admin
+    const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const openPerfilMenu = () => setIsPerfilOpen(!isPerfilOpen); // Function to open the profile menu
     
@@ -32,42 +33,9 @@ const Header = () => {
                 <Link href='/'>
                 <div className="text-2xl font-semibold">Paw House</div>
                 </Link>
-                {/* Navbar */}
-                <RenderIf condition={isAdmin}>
-                    <nav className="hidden md:flex  items-center  space-x-6">
-                        <a href="#pets-management" className="hover:text-yellow-400 transition-all duration-300">Manage Pets</a>
-                        <a href="#adoption-requests" className="hover:text-yellow-400 transition-all duration-300">Adoption Requests</a>
-                        <a href="#users-management" className="hover:text-yellow-400 transition-all duration-300">Manage Users</a>
-                        <a href="#adoption-report" className="hover:text-yellow-400 transition-all duration-300">Adoption Reports</a>
-                        <a href="#settings" className="hover:text-yellow-400 transition-all duration-300">Settings</a>
-
-                        <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
-                            <img
-                                src={userImage}
-                                alt="Avatar"
-                               className="w-10 h-10 rounded-full border-2 border-green-900 object-cover flex-shrink-0"
-                            />
-                        </button>
-                    </nav>
-                </RenderIf>
-
-                <RenderIf condition={!isAdmin}>
-                    <nav className="hidden md:flex items-center space-x-6">
-                        <a href="#available-pets" className="hover:text-yellow-400 transition-all duration-300">Available Pets</a>
-                        <a href="#adoption-status" className="hover:text-yellow-400 transition-all duration-300">Adoption Status</a>
-                        <a href="#profile" className="hover:text-yellow-400 transition-all duration-300">My Profile</a>
-                        <a href="#favorites" className="hover:text-yellow-400 transition-all duration-300">Favorite Pets</a>
-
-                        <button className="focus:outline-none min-w-10 min-h-10">
-                            <img
-                                src={userImage}
-                                alt="Avatar"
-                                className="w-10 h-10 rounded-full border-2 border-green-900 object-cover"
-                            />
-                        </button>
-                    </nav>
-                </RenderIf>
-
+                {/* Navbar - Use component navBar in tools*/}
+                <NavBar userImage={userImage} openPerfilMenu={openPerfilMenu} condition={isAdmin}/>
+         
                 {/* Mobile Menu Button */}
                 <button onClick={toggleMenu} className="md:hidden text-green-900 focus:outline-none">
                     <div className="w-9 h-10 cursor-pointer flex flex-col items-center justify-center">
