@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { NavBar } from './tools';
+import { NavBar, NavBarMobile } from './tools';
 import Link from 'next/link';
 interface TemplateProps {
     children?: React.ReactNode
@@ -28,10 +28,10 @@ const Header = () => {
     return (
         <header className="bg-green-200 text-green-900 shadow-md">
       
-      <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+            <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
                 {/* Logo */}
                 <Link href='/'>
-                <div className="text-2xl font-semibold">Paw House</div>
+                    <div className="text-2xl font-semibold">Paw House</div>
                 </Link>
                 {/* Navbar - Use component navBar in tools*/}
                 <NavBar userImage={userImage} openPerfilMenu={openPerfilMenu} condition={isAdmin}/>
@@ -46,31 +46,10 @@ const Header = () => {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
-
-            <RenderIf condition={!isAdmin}>
-            {isMenuOpen && (
-                <div className="md:hidden bg-green-300 p-4 space-y-4 text-green-900">
-                    <a href="#" className="block hover:text-yellow-400">Available Pets</a>
-                    <a href="#about" className="block hover:text-yellow-400">Adoption Status</a>
-                    <a href="#services" className="block hover:text-yellow-400">My Profile</a>
-                    <a href="#contact" className="block hover:text-yellow-400">Favorite Pets</a>
-                </div>
-            )}
-          </RenderIf>
-          <RenderIf condition={isAdmin}>
-          {isMenuOpen && (
-                <div className="md:hidden bg-green-300 p-4 space-y-4 text-green-900">
-                    <a href="#" className="block hover:text-yellow-400">Manage Pets</a>
-                    <a href="#about" className="block hover:text-yellow-400">Adoption Requests</a>
-                    <a href="#services" className="block hover:text-yellow-400">Manage Users</a>
-                    <a href="#contact" className="block hover:text-yellow-400">Adoption Reports</a>
-                    <a href="#contact" className="block hover:text-yellow-400">Settings</a>
-                </div>
-            )}
-          </RenderIf>
-
-    {isPerfilOpen && (
+            {/* Mobile Menu  Use component navBarMobile in tools*/}
+            <NavBarMobile userImage={userImage} openPerfilMenu={openPerfilMenu} condition={isAdmin} isMenuOpen={isMenuOpen} />
+            
+            <RenderIf condition={isPerfilOpen}>
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end">
                     <div className="w-72 bg-white shadow-2xl p-6 h-full z-50 rounded-l-2xl transition-all duration-300">
                     
@@ -90,7 +69,7 @@ const Header = () => {
                         </div>
                     </button>
 
-                    {/* Avatar e informações do usuário */}
+                    {/* Avatar and user information */}
                     <div className="flex flex-col items-center">
                         <div className="relative group w-24 h-24 mb-4">
                         <img
@@ -100,7 +79,7 @@ const Header = () => {
                                     shadow-xl transition duration-300 group-hover:brightness-90"
                         />
 
-                        {/* Ícone de lápis */}
+                        {/* Pencil icon */}
                         <button
                             className="absolute bottom-1 right-1 bg-yellow-300 text-green-800 
                                     p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 
@@ -120,7 +99,7 @@ const Header = () => {
                         <h3 className="text-xl font-semibold text-green-800">João Felix</h3>
                         <p className="text-sm text-gray-600 mb-4">joao@email.com</p>
 
-                        {/* Navegação */}
+                        {/* Navigation */}
                         <nav className="w-full">
                         <a href="/profile" className="block px-4 py-2 rounded-md text-green-700 hover:bg-green-50 transition">
                             My Profile
@@ -135,8 +114,8 @@ const Header = () => {
                     </div>
                     </div>
                 </div>
-                )}
-
+               
+            </RenderIf>
         </header>
     );
 };

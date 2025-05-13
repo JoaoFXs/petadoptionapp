@@ -1,1 +1,1 @@
-export { NavBar } from './NavBar';
+export { NavBar, NavBarMobile } from './NavBar';

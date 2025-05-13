@@ -4,7 +4,8 @@ interface NavBarProps{
    
     userImage?: string,
     openPerfilMenu?: () => void,
-    condition?: boolean
+    condition?: boolean,
+    isMenuOpen?: boolean
 
 }
 
@@ -32,6 +33,34 @@ export const NavBar: React.FC<NavBarProps> = ({userImage, openPerfilMenu, condit
                     </nav>
   )
 }
+
+
+
+export const NavBarMobile: React.FC<NavBarProps> = ({
+  userImage,
+  openPerfilMenu,
+  condition,
+  isMenuOpen
+}) => {
+  if (!isMenuOpen) return null; // ← only renders if the menu is open
+
+  const navItems = condition ? navItemsAdmin : navItemsUser;
+
+  return (
+    <div className="md:hidden bg-green-300 p-4 space-y-4 text-green-900">
+      {navItems.map((item) => (
+        <a
+          key={item.href}
+          href={item.href}
+          className="block hover:text-yellow-400"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  );
+};
+
 
 
 const navItemsAdmin = [
