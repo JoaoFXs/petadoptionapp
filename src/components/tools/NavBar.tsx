@@ -12,6 +12,7 @@ interface NavBarProps{
 export const NavBar: React.FC<NavBarProps> = ({userImage, openPerfilMenu, condition}: NavBarProps) => {   
     return(
                      <nav className="hidden md:flex  items-center  space-x-6">
+                        
                        {(condition ? navItemsAdmin : navItemsUser).map((item) => (
                             <a
                                 key={item.href}
@@ -47,6 +48,8 @@ export const NavBarMobile: React.FC<NavBarProps> = ({
   const navItems = condition ? navItemsAdmin : navItemsUser;
 
   return (
+ 
+    
     <div className="md:hidden bg-green-300 p-4 space-y-4 text-green-900">
       {navItems.map((item) => (
         <a
@@ -58,9 +61,8 @@ export const NavBarMobile: React.FC<NavBarProps> = ({
         </a>
 
       ))}
-      <a className="block hover:text-yellow-400">Settings</a>
-     <button className="relative overflow-hidden rounded-md bg-red-700 px-5 py-2.5 text-white transition-all duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110">Exit</button>
     </div>
+   
   );
 };
 
