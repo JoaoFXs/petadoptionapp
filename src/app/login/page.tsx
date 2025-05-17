@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Template } from '@/components';
+import { RenderIf, Template } from '@/components';
 import { InputText } from '@/components/tools/InputText';
 
 export default function Login() {
@@ -28,39 +28,55 @@ export default function Login() {
                     {newUserState ? 'Create New User' : 'Login to Your Account'}
                 </h2>
               
-                  <form className="space-y-4">     
-                      <InputText
+                  <form className="space-y-4"> 
+                    <RenderIf condition={newUserState}>    
+                        <InputText
+                            type="text"
+                            id="name_temp"
+                            onChange={() => {}}
+                            placeHolder="Name"
+                            style="w-full"
+                        />    
+                    </RenderIf>
+
+                    <InputText
                           type="text"
-                          id="name_temp"
-                          placeHolder="Name"
-                          style="w-full"
-                      />    
-                      <InputText
-                          type="text"
+                          id="email_temp"
+                          onChange={() => {}}
                           placeHolder="Email"
                           style="w-full"
-                      />    
+                    />    
                      <InputText
-                          type="text"
+                          type="password"
+                          id="password_temp"
+                          onChange={() => {}}
                           placeHolder="Password"
                           style="w-full"
                       />    
-                      <input
-                        type="text"
-                        placeholder="Email"
-                        className="w-full px-4 py-2 border rounded-md"
-                      />
-                      <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full px-4 py-2 border rounded-md"
-                      />
+                    <RenderIf condition={newUserState}>    
+                      <InputText
+                          type="password"
+                          id="passwordMatch_temp"
+                          placeHolder="Confirm Your Password"
+                          style="w-full"
+                      />   
+                    </RenderIf>   
+                    
+                    <div className="flex items-center justify-between">               
                       <button
                         type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
                       >
-                        Entrar
+                        Login
                       </button>
+
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                      >
+                        Register
+                      </button>
+                    </div>
                   </form>
             </div>
           </div>
