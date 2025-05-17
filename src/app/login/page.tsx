@@ -53,6 +53,7 @@ export default function Login() {
                           onChange={() => {}}
                           placeholder="Password"
                           style="w-full"
+                          onlyPassword={true}
                       />            
                  
                     <RenderIf condition={newUserState}>    
