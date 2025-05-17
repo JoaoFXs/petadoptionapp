@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { RenderIf, Template } from '@/components';
-import { InputText } from '@/components/tools/InputText';
+import { RenderIf, Template, InputText, Button, EyeButton} from '@/components';
+
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(true); // Mostra o popup por padrão
@@ -34,68 +34,69 @@ export default function Login() {
                             type="text"
                             id="name_temp"
                             onChange={() => {}}
-                            placeHolder="Name"
+                            placeholder="Name"
                             style="w-full"
                         />    
+                       
                     </RenderIf>
 
                     <InputText
                           type="text"
                           id="email_temp"
                           onChange={() => {}}
-                          placeHolder="Email"
+                          placeholder="Email"
                           style="w-full"
                     />    
                      <InputText
                           type="password"
                           id="password_temp"
                           onChange={() => {}}
-                          placeHolder="Password"
+                          placeholder="Password"
                           style="w-full"
-                      />    
+                      />            
+                 
                     <RenderIf condition={newUserState}>    
                       <InputText
                           type="password"
                           id="passwordMatch_temp"
-                          placeHolder="Confirm Your Password"
+                          placeholder="Confirm Your Password"
                           style="w-full"
                       />   
                     </RenderIf>   
 
-                    <div className="flex items-center justify-between">  
+                    <div className="flex items-center justify-between"> 
+
+                      <RenderIf condition={!newUserState}>  
+                        <Button
+                          type='submit'
+                          color='bg-green-600 text-white hover:bg-green-700 mr-3'
+                          label='Login'
+                        />   
+                        <Button
+                          type='button'
+                          onClick={() => setNewUserState(true)}
+                          color='bg-yellow-600 text-white hover:bg-yellow-700'
+                          label='Register'
+                        />   
+
                       
-                    <RenderIf condition={!newUserState}>
-                      <button
-                        type="submit"
-                        className="w-full mr-3 bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
-                      >
-                        Login
-                      </button>
-                        <button
-                        type="submit"
-                        onClick={() => setNewUserState(true)}
-                        className="w-full bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700"
-                         >
-                        Register
-                      </button>
-                    </RenderIf>
+                      </RenderIf> 
 
-                    <RenderIf condition={newUserState}>
-                      <button
-                        type="submit"
-                        className="w-full bg-green-600 mr-3 text-white py-2 rounded-md hover:bg-green-700"
-                      >
-                        Save
-                      </button>
+                      <RenderIf condition={newUserState}>
 
-                      <button
-                        type="submit"
-                        className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
-                        onClick={() => setNewUserState(false)}
-                      >
-                        Cancel
-                      </button>
-                    </RenderIf>
+                        <Button
+                          type='submit'
+                          color='bg-green-600  text-white hover:bg-green-700 mr-3'
+                          label='Save'
+                        />                    
+
+                        <Button
+                          type='button'
+                          onClick={() => setNewUserState(false)}
+                          color='bg-red-600 mr-3 text-white hover:bg-red-700'
+                          label='Cancel'
+                        />    
+                      </RenderIf>
                     </div>
                   </form>
             </div>
