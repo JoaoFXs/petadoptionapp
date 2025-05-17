@@ -6,7 +6,7 @@ import { InputText } from '@/components/tools/InputText';
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(true); // Mostra o popup por padrão
-  const [newUserState, setNewUserState] = useState(true); // Estado para controlar se é um novo usuário
+  const [newUserState, setNewUserState] = useState(false); // Estado para controlar se é um novo usuário
   const closeModal = () => setIsOpen(false);
 
   return (
@@ -61,21 +61,41 @@ export default function Login() {
                           style="w-full"
                       />   
                     </RenderIf>   
-                    
-                    <div className="flex items-center justify-between">               
+
+                    <div className="flex items-center justify-between">  
+                      
+                    <RenderIf condition={!newUserState}>
                       <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                        className="w-full mr-3 bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
                       >
                         Login
+                      </button>
+                        <button
+                        type="submit"
+                        onClick={() => setNewUserState(true)}
+                        className="w-full bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700"
+                         >
+                        Register
+                      </button>
+                    </RenderIf>
+
+                    <RenderIf condition={newUserState}>
+                      <button
+                        type="submit"
+                        className="w-full bg-green-600 mr-3 text-white py-2 rounded-md hover:bg-green-700"
+                      >
+                        Save
                       </button>
 
                       <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                        className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
+                        onClick={() => setNewUserState(false)}
                       >
-                        Register
+                        Cancel
                       </button>
+                    </RenderIf>
                     </div>
                   </form>
             </div>
