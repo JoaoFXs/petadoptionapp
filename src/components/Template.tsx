@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { NavBar, NavBarMobile } from './tools';
 import Link from 'next/link';
+import { useAuth } from '@/resources';
+import { useRouter } from 'next/navigation';
+
 interface TemplateProps {
     children?: React.ReactNode
     loading?: boolean;
@@ -33,7 +36,13 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const openPerfilMenu = () => setIsPerfilOpen(!isPerfilOpen); // Function to open the profile menu
-    
+    const auth = useAuth();
+    const user = auth.getUserSession();
+    const router = useRouter();
+    function logout(){
+        auth.invalidateSession();
+        router.push("/login");
+    }
     return (
         <header className="bg-green-200 text-green-900 shadow-md">
       
@@ -127,8 +136,8 @@ const Header = () => {
                         </button>
                         </div>
 
-                        <h3 className="text-xl font-semibold text-green-800">João Felix</h3>
-                        <p className="text-sm text-gray-600 mb-4">joao@email.com</p>
+                        <h3 className="text-xl font-semibold text-green-800">{user?.username}</h3>
+                        <p className="text-sm text-gray-600 mb-4">{user?.email}</p>
 
                         {/* Navigation */}
                         <nav className="w-full">
@@ -138,7 +147,7 @@ const Header = () => {
                         <a href="/settings" className="block px-4 py-2 rounded-md text-green-700 hover:bg-green-50 transition">
                             Settings
                         </a>
-                            <button
+                            <button onClick={logout}
                                     className="block mx-auto mt-4 relative overflow-hidden rounded-md bg-red-700 px-5 py-2.5 text-white transition-all duration-300 
                                             [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110"
                                 >Exit</button>
