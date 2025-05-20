@@ -76,6 +76,62 @@ class AuthService{
         }catch(error){}
         
     }
+
+    //Retrieves the use session from localStorage
+    getUserSession(): UserSessionToken | null{
+        try{
+            const authString = localStorage.getItem(AuthService.AUTH_PARAM);
+
+            //If there's no session saved, return null
+            if(!authString){
+                return null;
+            }
+            //Parse the session JSON string back into a UserSessionToken object
+            const token: UserSessionToken = JSON.parse(authString);
+            return token;
+        }catch(error){
+            return null;
+        }
+    }
+
+// Checks if the current session is still valid based on expiration time
+isSessionValid(): boolean {
+    // Retrieve the user session from localStorage
+    const userSession: UserSessionToken | null = this.getUserSession();
+   
+    // If there is no session, it's not valid
+    if (!userSession) {
+        return false;
+    }
+
+    // Get the expiration timestamp from the session
+    const expiration: number | undefined = userSession.expiration;
+
+    if (expiration) {
+        // Convert the expiration time from seconds to milliseconds
+        const expirationDataInMillis = expiration * 1000;
+
+        // Compare expiration with the current time
+        return new Date() < new Date(expirationDataInMillis);
+    }
+
+    // If expiration is not defined, the session is invalid
+    return false;
 }
+
+    invalidateSession(): void{
+        try{
+            // Remove the session from localStorage
+            localStorage.removeItem(AuthService.AUTH_PARAM);
+        }
+        catch(error){}
+    }
+}
+
+// Exporting a custom hook to create a new AuthService instance
+export const useAuth = () => new AuthService();
+
+
+
 
 
