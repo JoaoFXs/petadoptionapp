@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { NavBar, NavBarMobile } from './tools';
 import Link from 'next/link';
 interface TemplateProps {
@@ -13,6 +14,14 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+             <ToastContainer
+                position="top-right"
+                autoClose={8000}
+                hideProgressBar={false}
+                draggable={false}
+                closeOnClick={true}
+                pauseOnHover={true}
+                />
         </div>
     )
 }
