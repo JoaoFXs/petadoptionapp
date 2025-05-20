@@ -9,13 +9,14 @@ export class Credentials{
     password?: string;
 }
 
-export class AcessToken{
+export class AccessToken{
     accessToken?: string;
 }
 
 export class UserSessionToken{
     username?: string;
     email?: string;
+    role?: string;
     accessToken?: string;
     expiration?: string;
 }
