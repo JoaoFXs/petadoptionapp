@@ -15,7 +15,7 @@ export const loginValidationScheme = Yup.object().shape({
   });
 
   export const signupValidationScheme = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    username: Yup.string().required('Name is required'),
     email: Yup.string().trim().email('Invalid email').required('Email is required'),
     password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters long!'),
     passwordMatch: Yup.string()

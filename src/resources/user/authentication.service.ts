@@ -40,7 +40,7 @@ class AuthService{
 
         console.log("Response Auth.service: ", response);
 
-        if(response.status == 401){
+        if(response.status == 401 || response.status == 409){
             const responseError = await response.json();
             throw new Error(responseError.error);
         }

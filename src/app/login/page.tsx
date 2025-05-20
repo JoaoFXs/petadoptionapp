@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { RenderIf, Template, InputText, Button, EyeButton, useNotification} from '@/components';
+import { RenderIf, Template, InputText, Button, EyeButton, useNotification, FieldError} from '@/components';
 import { LoginForm, signupValidationScheme, loginValidationScheme, formScheme} from './formScheme'
 import { Credentials, AccessToken, User } from '@/resources/user/user.resource'
 import { useAuth} from '@/resources'
@@ -16,6 +16,7 @@ export default function Login() {
   const router = useRouter();
   const notification = useNotification();
   async function onSubmit(values: LoginForm){
+    console.log("newUserState is:", newUserState);
     if (!newUserState) {
         const credentials: Credentials = { email: values.email, password: values.password};
         try{
@@ -42,7 +43,7 @@ export default function Login() {
     }
   }
 
-  const {values, handleChange, handleSubmit, errors, resetForm} = useFormik<LoginForm>({
+  const { values, handleChange, handleSubmit, errors, resetForm }  = useFormik<LoginForm>({
     initialValues: formScheme,
     validationSchema: newUserState ? signupValidationScheme : loginValidationScheme,
     onSubmit: onSubmit
@@ -77,7 +78,7 @@ export default function Login() {
                             placeholder="Name"
                             style="w-full"
                         />    
-                       
+                       <FieldError error={errors.username}/>
                     </RenderIf>
 
                     <InputText
@@ -88,6 +89,7 @@ export default function Login() {
                           placeholder="Email"
                           style="w-full"
                     />    
+                    <FieldError error={errors.email}/>
                      <InputText
                           type="password"
                           id="password"
@@ -96,7 +98,8 @@ export default function Login() {
                           placeholder="Password"
                           style="w-full"
                           onlyPassword={true}
-                      />            
+                      />          
+                      <FieldError error={errors.password}/>  
                  
                     <RenderIf condition={newUserState}>    
                       <InputText
@@ -107,6 +110,7 @@ export default function Login() {
                           placeholder="Confirm Your Password"
                           style="w-full"
                       />   
+                      <FieldError error={errors.password}/> 
                     </RenderIf>   
 
                     <div className="flex items-center justify-between"> 
