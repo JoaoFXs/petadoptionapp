@@ -1,7 +1,7 @@
 
 
-interface NavBarProps{
-   
+interface NavBarProps{  
+    
     userImage?: string,
     openPerfilMenu?: () => void,
     condition?: boolean,
@@ -21,16 +21,17 @@ export const NavBar: React.FC<NavBarProps> = ({userImage, openPerfilMenu, condit
                             >
                                 {item.label}
                             </a>
-                            ))}
-                       
+                              
+                      ))}
 
-                        <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
+  
+                      <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
                             <img
                                 src={userImage}
                                 alt="Avatar"
                                className="w-10 h-10 rounded-full border-2 border-green-900 object-cover flex-shrink-0"
                             />
-                        </button>
+                      </button>
                     </nav>
   )
 }
@@ -47,9 +48,7 @@ export const NavBarMobile: React.FC<NavBarProps> = ({
 
   const navItems = condition ? navItemsAdmin : navItemsUser;
 
-  return (
- 
-    
+  return (   
     <div className="md:hidden bg-green-300 p-4 space-y-4 text-green-900">
       {navItems.map((item) => (
         <a
@@ -62,7 +61,6 @@ export const NavBarMobile: React.FC<NavBarProps> = ({
 
       ))}
     </div>
-   
   );
 };
 
