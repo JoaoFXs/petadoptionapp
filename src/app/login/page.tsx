@@ -15,6 +15,7 @@ export default function Login() {
   const auth = useAuth();
   const router = useRouter();
   const notification = useNotification();
+  
   async function onSubmit(values: LoginForm){
     console.log("newUserState is:", newUserState);
     if (!newUserState) {
@@ -30,9 +31,15 @@ export default function Login() {
       }
     }
     else{
-      const user: User = { username: values.username, email: values.email, password: values.password};
+      const user: User = { photo: values.photo  ,username: values.username, email: values.email, password: values.password};
       try{
-        await auth.save(user);
+
+        const formData = new FormData();
+        formData.append("photo", values.photo)
+        formData.append("username", values.username)
+        formData.append("email", values.email)
+        formData.append("password", values.password)
+        await auth.save(formData);
         notification.notify('User created successfully', 'success');
         resetForm();
         setNewUserState(false);
@@ -69,6 +76,47 @@ export default function Login() {
                 </h2>
               
                   <form onSubmit={handleSubmit} className="space-y-4"> 
+                    
+                    /** Photo register and preview */
+                    <RenderIf condition={newUserState}>   
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="flex justify-center mb-4">
+                          <label htmlFor="photo" className="cursor-pointer relative">
+                            <img
+                              src={
+                                values.photo && typeof values.photo !== 'string'
+                                  ? URL.createObjectURL(values.photo)
+                                  : 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' 
+                              }
+                              alt="Profile"
+                              className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 hover:opacity-80 transition"
+                            />
+                            <input
+                              type="file"
+                              id="photo"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.currentTarget.files && e.currentTarget.files[0]) {
+                                  handleChange({
+                                    target: {
+                                      id: "photo",
+                                      value: e.currentTarget.files[0],
+                                    },
+                                  } as any);
+                                }
+                              }}
+                              className="hidden"
+                            />
+                            <span className="absolute bottom-0 right-0 bg-gray-200 p-1 rounded-full shadow hover:bg-gray-300">
+                              <svg className="w-4 h-4 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.414 2.586a2 2 0 010 2.828l-9.192 9.192a1 1 0 01-.293.195l-4 2a1 1 0 01-1.316-1.316l2-4a1 1 0 01.195-.293l9.192-9.192a2 2 0 012.828 0z" />
+                              </svg>
+                            </span>
+                        </label>
+                      </div>
+                      <FieldError error={errors.photo} />
+                    </div>
+                    </RenderIf> 
                     <RenderIf condition={newUserState}>    
                         <InputText
                             type="text"

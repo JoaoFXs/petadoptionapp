@@ -1,4 +1,5 @@
 export class User{
+    photo?: Blob | string;
     username?: string;
     email?: string;
     password?: string;

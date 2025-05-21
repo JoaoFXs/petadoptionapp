@@ -43,6 +43,16 @@ const Header = () => {
         auth.invalidateSession();
         router.push("/login");
     }
+
+    function openPerfilorLogin(){
+        if(auth.isSessionValid()){
+             setIsPerfilOpen(!isPerfilOpen);
+        }else{
+            router.push("/login");
+        }
+    }
+
+
     return (
         <header className="bg-green-200 text-green-900 shadow-md">
       
@@ -51,9 +61,10 @@ const Header = () => {
                 <Link href='/'>
                     <div className="text-2xl font-semibold">Paw House</div>
                 </Link>
-                {/* Navbar - Use component navBar in tools*/}
-                <NavBar userImage={userImage} openPerfilMenu={openPerfilMenu} condition={isAdmin}/>
-         
+                {/* Navbar */}
+
+                <NavBar userImage={userImage} openPerfilMenu={openPerfilorLogin} condition={isAdmin}/>
+
                 {/* Mobile Menu Button */}
                 <div className="md:hidden flex items-center gap-x-2">
                          <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">

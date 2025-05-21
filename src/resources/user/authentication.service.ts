@@ -28,7 +28,7 @@ class AuthService{
     }
 
     // Method to create a new user with given user data
-    async save(user: User): Promise<void>{
+    async save(user: FormData): Promise<void>{
         const response = await fetch(this.baseURL,{
             method: 'POST',
             headers: {
