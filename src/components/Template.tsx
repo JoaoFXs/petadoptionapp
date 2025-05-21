@@ -134,7 +134,7 @@ const Header = () => {
                         <img
                             src={user?.url}
                             alt="Avatar"
-                            className="w-full h-full object-cover rounded-full border-4 border-yellow-300 
+                            className="w-full h-full object-cover rounded-full border-4 border-green-800 
                                     shadow-xl transition duration-300 group-hover:brightness-90"
                         />
 

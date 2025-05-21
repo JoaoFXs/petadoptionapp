@@ -10,12 +10,17 @@ import { useFormik } from 'formik';
 export default function Login() {
   const [isOpen, setIsOpen] = useState(true); // Mostra o popup por padrão
   const [newUserState, setNewUserState] = useState(false); // Estado para controlar se é um novo usuário
-  const closeModal = () => setIsOpen(false);
+  
 
   const auth = useAuth();
   const router = useRouter();
   const notification = useNotification();
   
+
+  function closeModal(){
+      setIsOpen(false);
+      router.push("/");
+  }
   async function onSubmit(values: LoginForm){
     console.log("newUserState is:", newUserState);
     if (!newUserState) {
