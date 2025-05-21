@@ -16,8 +16,10 @@ export class AccessToken{
 
 export class UserSessionToken{
     username?: string;
+    url?: string;
     email?: string;
     role?: string;
     accessToken?: string;
     expiration?: number;
+    photo?:  Blob;
 }

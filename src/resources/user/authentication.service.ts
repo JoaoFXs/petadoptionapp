@@ -1,3 +1,4 @@
+import { decode } from 'punycode';
 import { AccessToken, Credentials, User, UserSessionToken } from './user.resource';
 import jwt from 'jwt-decode';
 
@@ -28,13 +29,10 @@ class AuthService{
     }
 
     // Method to create a new user with given user data
-    async save(user: FormData): Promise<void>{
+    async save(user: FormData): Promise<string>{
         const response = await fetch(this.baseURL,{
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),  
+            body: user,  
     
         });
 
@@ -45,6 +43,8 @@ class AuthService{
             throw new Error(responseError.error);
         }
 
+        return response.headers.get('location') ?? ''
+
     }
 
      // Initializes a session by decoding the token and storing session data
@@ -52,13 +52,15 @@ class AuthService{
         if(token.accessToken){
             //Decode the token using jwt-decode library
             const decodedToken: any = jwt(token.accessToken);
-
+           
             //Create a new UserSessionToken object using decoded token data
             const userSessionToken: UserSessionToken = {
                 accessToken: token.accessToken,
                 email: decodedToken.sub,
                 role: decodedToken.role,
-                username: decodedToken.name,
+                photo: decodedToken.photo,
+                username: decodedToken.name,  
+                url: decodedToken.url,    
                 expiration: decodedToken.exp
             };
 
@@ -81,7 +83,6 @@ class AuthService{
     getUserSession(): UserSessionToken | null{
         try{
             const authString = localStorage.getItem(AuthService.AUTH_PARAM);
-
             //If there's no session saved, return null
             if(!authString){
                 return null;

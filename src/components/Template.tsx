@@ -5,17 +5,19 @@ import { NavBar, NavBarMobile } from './tools';
 import Link from 'next/link';
 import { useAuth } from '@/resources';
 import { useRouter } from 'next/navigation';
-
+import { User, UserSessionToken } from '@/resources/user/user.resource';
 interface TemplateProps {
     children?: React.ReactNode
     loading?: boolean;
 }
 
 export const Template: React.FC<TemplateProps> = ({ children, loading = false }: TemplateProps) => {
+    
     return (
         <div className="flex flex-col min-h-screen bg-white">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">{children}
+            </main>
             <Footer />
              <ToastContainer
                 position="top-right"
@@ -32,7 +34,7 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPerfilOpen, setIsPerfilOpen] = useState(false); // State to track if the profile menu is open
-    const [userImage, setUserImage] = useState('https://contributors-img.web.app/image?repo=JoaoFXs/climasync'); // Placeholder for user image
+    const [userImage, setUserImage] = useState<UserSessionToken | null>(null); // Placeholder for user image'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
     const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const openPerfilMenu = () => setIsPerfilOpen(!isPerfilOpen); // Function to open the profile menu
@@ -44,6 +46,9 @@ const Header = () => {
         router.push("/login");
     }
 
+    function viewUserImage(){
+        setUserImage(user);
+    }
     function openPerfilorLogin(){
         if(auth.isSessionValid()){
              setIsPerfilOpen(!isPerfilOpen);
@@ -63,13 +68,16 @@ const Header = () => {
                 </Link>
                 {/* Navbar */}
 
-                <NavBar userImage={userImage} openPerfilMenu={openPerfilorLogin} condition={isAdmin}/>
-
+               <NavBar
+                    userImage={user?.url}
+                    openPerfilMenu={openPerfilorLogin}
+                    condition={isAdmin}
+                    />
                 {/* Mobile Menu Button */}
                 <div className="md:hidden flex items-center gap-x-2">
                          <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
                             <img
-                                src={userImage}
+                                src={user?.url}
                                 alt="Avatar"
                                className="w-10 h-10 rounded-full border-2 border-green-900 object-cover flex-shrink-0"
                             />
@@ -98,7 +106,7 @@ const Header = () => {
             </div>
 
             {/* Mobile Menu  Use component navBarMobile in tools*/}
-            <NavBarMobile userImage={userImage} openPerfilMenu={openPerfilMenu} condition={isAdmin} isMenuOpen={isMenuOpen} />
+            <NavBarMobile userImage={user?.url} openPerfilMenu={openPerfilMenu} condition={isAdmin} isMenuOpen={isMenuOpen} />
             
             <RenderIf condition={isPerfilOpen}>
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end">
@@ -124,7 +132,7 @@ const Header = () => {
                     <div className="flex flex-col items-center">
                         <div className="relative group w-24 h-24 mb-4">
                         <img
-                            src={userImage}
+                            src={user?.url}
                             alt="Avatar"
                             className="w-full h-full object-cover rounded-full border-4 border-yellow-300 
                                     shadow-xl transition duration-300 group-hover:brightness-90"

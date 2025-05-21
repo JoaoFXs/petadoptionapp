@@ -35,10 +35,11 @@ export default function Login() {
       try{
 
         const formData = new FormData();
-        formData.append("photo", values.photo)
+
         formData.append("username", values.username)
         formData.append("email", values.email)
         formData.append("password", values.password)
+        formData.append("photo", values.photo)
         await auth.save(formData);
         notification.notify('User created successfully', 'success');
         resetForm();
