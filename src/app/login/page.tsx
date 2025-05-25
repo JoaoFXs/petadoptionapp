@@ -22,7 +22,7 @@ export default function Login() {
       router.push("/");
   }
   async function onSubmit(values: LoginForm){
-    console.log("newUserState is:", newUserState);
+   
     if (!newUserState) {
         const credentials: Credentials = { email: values.email, password: values.password};
         try{
@@ -83,7 +83,7 @@ export default function Login() {
               
                   <form onSubmit={handleSubmit} className="space-y-4"> 
                     
-                    /** Photo register and preview */
+                    {/** Photo register and preview */}
                     <RenderIf condition={newUserState}>   
                       <div className="flex flex-col items-center gap-2">
                         <div className="flex justify-center mb-4">
@@ -164,7 +164,7 @@ export default function Login() {
                           placeholder="Confirm Your Password"
                           style="w-full"
                       />   
-                      <FieldError error={errors.password}/> 
+                      <FieldError error={errors.passwordMatch}/> 
                     </RenderIf>   
 
                     <div className="flex items-center justify-between"> 
