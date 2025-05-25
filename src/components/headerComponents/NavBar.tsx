@@ -75,7 +75,7 @@ const navItemsAdmin = [
 ];
 
 const navItemsUser = [
-  { href: "#available-pets", label: "Available Pets" },
+  { href: "/available", label: "Available Pets" },
   { href: "#adoption-status", label: "Adoption Status" },
   { href: "#my-profile", label: "My Profile" },
   { href: "#favorite-pets", label: "Favorite Pets" },
