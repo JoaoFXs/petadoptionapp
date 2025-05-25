@@ -32,6 +32,28 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
     )
 }
 
+/**
+ * Header component for the application.
+ *
+ * Renders the main navigation bar, logo, user avatar, and profile menu.
+ * Handles user authentication state, profile image display, and navigation.
+ * Supports both desktop and mobile layouts, including a responsive menu.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered header component.
+ *
+ * @example
+ * ```tsx
+ * <Header />
+ * ```
+ *
+ * @remarks
+ * - Uses `useAuth` for authentication/session management.
+ * - Displays user avatar and profile information if logged in.
+ * - Provides navigation links and logout functionality.
+ * - Integrates with `NavBar`, `NavBarMobile`, and `RenderIf` components.
+ */
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPerfilOpen, setIsPerfilOpen] = useState(false); // State to track if the profile menu is open
@@ -39,9 +61,19 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const openPerfilMenu = () => setIsPerfilOpen(!isPerfilOpen); // Function to open the profile menu
+    
+    
     const auth = useAuth();
     const user = auth.getUserSession();
     const router = useRouter();
+    /**
+     * Logs the user out by invalidating the current authentication session
+     * and redirects them to the login page.
+     *
+     * @remarks
+     * This function calls `auth.invalidateSession()` to clear the user's session,
+     * then navigates to the "/login" route using the router.
+     */
     function logout(){
         auth.invalidateSession();
         router.push("/login");
@@ -51,6 +83,15 @@ const Header = () => {
         viewUserImage();
     }, [user]);
 
+    /**
+     * Sets the user's image URL.
+     * 
+     * If the `user` object has a valid `url` property, this function sets the user's image to that URL.
+     * Otherwise, it sets the user's image to a default avatar image.
+     *
+     * @remarks
+     * This function assumes that `setUserImage` and `user` are available in the current scope.
+     */
     function viewUserImage(){
             if(user?.url){
                 setUserImage(user.url);
@@ -58,6 +99,18 @@ const Header = () => {
                 setUserImage('https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg');
             }
     }
+
+    /**
+     * Handles the logic for opening the user profile or redirecting to the login page.
+     *
+     * If the user's authentication session is valid, toggles the profile modal's open state.
+     * Otherwise, redirects the user to the login page.
+     *
+     * @remarks
+     * Relies on `auth.isSessionValid()` to check authentication status and uses `router.push` for navigation.
+     *
+     * @returns {void}
+     */
     function openPerfilorLogin(){
         if(auth.isSessionValid()){
              setIsPerfilOpen(!isPerfilOpen);
@@ -84,7 +137,8 @@ const Header = () => {
                     />
                 {/* Mobile Menu Button */}
                 <div className="md:hidden flex items-center gap-x-2">
-                         <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
+
+                        <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
                             <img
                                 src={userImage}
                                 alt="Avatar"
@@ -190,6 +244,11 @@ const Header = () => {
     );
 };
 
+/**
+ * Footer component that displays the application's footer section.
+ *
+ * @returns {JSX.Element} The rendered footer element with developer credit and copyright.
+ */
 const Footer = () => {
     return (
       <footer className="bg-yellow-100 text-green-900 items-center py-6 border-t border-green-300">
@@ -204,6 +263,13 @@ interface RenderIfProps {
     condition?: boolean;
     children: React.ReactNode;
 }
+/**
+ * Conditionally renders its children based on the provided `condition` prop.
+ *
+ * @param condition - A boolean value that determines whether the children should be rendered. Defaults to `true`.
+ * @param children - The React nodes to render if `condition` is `true`.
+ * @returns The children if `condition` is `true`, otherwise `null`.
+ */
 export const RenderIf: React.FC<RenderIfProps> = ({ condition = true, children }) => {
     if (condition) {
         return <>{children}</>;
