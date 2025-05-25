@@ -2,6 +2,7 @@
 import React, { useState, useEffect  } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { NavBar, NavBarMobile } from './tools';
+import { MobileMenuButtons } from '@/components';
 import Link from 'next/link';
 import { useAuth } from '@/resources';
 import { useRouter } from 'next/navigation';
@@ -66,14 +67,7 @@ const Header = () => {
     const auth = useAuth();
     const user = auth.getUserSession();
     const router = useRouter();
-    /**
-     * Logs the user out by invalidating the current authentication session
-     * and redirects them to the login page.
-     *
-     * @remarks
-     * This function calls `auth.invalidateSession()` to clear the user's session,
-     * then navigates to the "/login" route using the router.
-     */
+
     function logout(){
         auth.invalidateSession();
         router.push("/login");
@@ -83,15 +77,6 @@ const Header = () => {
         viewUserImage();
     }, [user]);
 
-    /**
-     * Sets the user's image URL.
-     * 
-     * If the `user` object has a valid `url` property, this function sets the user's image to that URL.
-     * Otherwise, it sets the user's image to a default avatar image.
-     *
-     * @remarks
-     * This function assumes that `setUserImage` and `user` are available in the current scope.
-     */
     function viewUserImage(){
             if(user?.url){
                 setUserImage(user.url);
@@ -100,17 +85,6 @@ const Header = () => {
             }
     }
 
-    /**
-     * Handles the logic for opening the user profile or redirecting to the login page.
-     *
-     * If the user's authentication session is valid, toggles the profile modal's open state.
-     * Otherwise, redirects the user to the login page.
-     *
-     * @remarks
-     * Relies on `auth.isSessionValid()` to check authentication status and uses `router.push` for navigation.
-     *
-     * @returns {void}
-     */
     function openPerfilorLogin(){
         if(auth.isSessionValid()){
              setIsPerfilOpen(!isPerfilOpen);
@@ -128,44 +102,16 @@ const Header = () => {
                 <Link href='/'>
                     <div className="text-2xl font-semibold">Paw House</div>
                 </Link>
-                {/* Navbar */}
-
+                {/* Navbar - Header*/}
                <NavBar
                     userImage={userImage}
                     openPerfilMenu={openPerfilorLogin}
                     condition={isAdmin}
                     />
-                {/* Mobile Menu Button */}
-                <div className="md:hidden flex items-center gap-x-2">
 
-                        <button onClick={openPerfilMenu} className="focus:outline-none min-w-10 min-h-10">
-                            <img
-                                src={userImage}
-                                alt="Avatar"
-                               className="w-10 h-10 rounded-full border-2 border-green-900 object-cover flex-shrink-0"
-                            />
-                        </button>
-
-                        <button onClick={toggleMenu} className="text-green-900 focus:outline-none">
-                            <div className="w-9 h-10 cursor-pointer flex flex-col items-center justify-center">
-                            <div
-                                className={`w-[50%] h-[2px] bg-green-900 rounded-sm transition-all duration-300 origin-left translate-y-[0.45rem] ${
-                                isMenuOpen ? 'rotate-[-45deg]' : ''
-                                }`}
-                            ></div>
-                            <div
-                                className={`w-[50%] h-[2px] bg-green-900 rounded-md transition-all duration-300 origin-center ${
-                                isMenuOpen ? 'hidden' : ''
-                                }`}
-                            ></div>
-                            <div
-                                className={`w-[50%] h-[2px] bg-green-900 rounded-md transition-all duration-300 origin-left -translate-y-[0.45rem] ${
-                                isMenuOpen ? 'rotate-[45deg]' : ''
-                                }`}
-                            ></div>
-                            </div>
-                        </button>
-                </div>
+                {/* Mobile Menu Buttons */}
+                <MobileMenuButtons isMenuOpen={isMenuOpen} openPerfilMenu={openPerfilMenu} src={userImage} toggleMenu={toggleMenu}/>
+                       
             </div>
 
             {/* Mobile Menu  Use component navBarMobile in tools*/}
