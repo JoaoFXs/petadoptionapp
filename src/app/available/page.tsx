@@ -20,21 +20,21 @@ const mockPets: Pet[] = [
     id: 1,
     name: 'Bolt',
     breed: 'Labrador',
-    age: '2 anos',
+    age: '2',
     imageUrl: 'https://images.unsplash.com/photo-1601758003122-58e5f2dfd597?auto=format&fit=crop&w=400&q=80',
   },
   {
     id: 2,
     name: 'Luna',
     breed: 'Poodle',
-    age: '3 anos',
+    age: '3',
     imageUrl: 'https://images.unsplash.com/photo-1583511655826-05700d52f4dc?auto=format&fit=crop&w=400&q=80',
   },
   {
     id: 3,
     name: 'Max',
     breed: 'Bulldog',
-    age: '1 ano',
+    age: '1',
     imageUrl: 'https://images.unsplash.com/photo-1598134493279-7cd330b65dbb?auto=format&fit=crop&w=400&q=80',
   },
 ];
@@ -75,7 +75,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                 <h2 className="text-2xl font-bold text-green-700">{pet.name}</h2>
                 <p className="text-sm text-gray-500 mt-1">Breed: {pet.breed}</p>
                 <p className="text-sm text-gray-500">Age: {pet.age}</p>
-                <button className="mt-5 w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-2 px-4 rounded-xl shadow-sm transition duration-300">
+                <button className="mt-5 w-full bg-gradient-to-r bg-green-300  hover:from-green-500 hover:to-green-600 text-green-800 py-2 px-4 rounded-xl shadow-sm transition duration-300">
                   See more...
                 </button>
               </div>
