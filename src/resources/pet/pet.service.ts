@@ -6,11 +6,25 @@ class PetService{
     baseURL: string = process.env.NEXT_PUBLIC_API_URL + '/v1/pet';
     auth = useAuth();
 
-    async search(query: string = "", available: boolean = true) : Promise<Pet[]>{
-        const url = `${this.baseURL}?available=${available.toString()}&query=${query}`
-        const response = await fetch(url);
-        return await response.json();
-    }
+async search(query: string = "", available?: boolean | null ): Promise<Pet[]> {
+  let url = `${this.baseURL}?`;
+
+  const params: string[] = [];
+
+  if (query.trim() !== "") {
+    params.push(`query=${encodeURIComponent(query)}`);
+  }
+
+  if (available !== null && available !== undefined) {
+    params.push(`available=${available.toString()}`);
+  }
+
+  // Junta os parâmetros, se houver
+  url += params.join("&");
+
+  const response = await fetch(url);
+  return await response.json();
+}
 
 }
 
