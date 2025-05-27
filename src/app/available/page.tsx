@@ -1,5 +1,5 @@
 'use client';
-import { Template } from '@/components';
+import { InputText, Template } from '@/components';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -40,8 +40,8 @@ const mockPets: Pet[] = [
 ];
 
 const Available: React.FC<AvailablePetsProps> = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-
+  const [query, setQuery] = useState('');
+  
   return (
     <Template>
       <section className="py-10 px-4 max-w-7xl mx-auto">
@@ -50,10 +50,12 @@ const Available: React.FC<AvailablePetsProps> = () => {
           <input
             type="text"
             placeholder="Search by name or breed..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
             className="w-full max-w-xl px-6 py-3 rounded-full border border-green-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           />
+
+          
+
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
