@@ -1,0 +1,1 @@
+import { Pet } from './pet.resource'
