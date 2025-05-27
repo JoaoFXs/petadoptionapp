@@ -8,7 +8,6 @@ class PetService{
 
     async search(query: string = "", available: boolean = true) : Promise<Pet[]>{
         const url = `${this.baseURL}?available=${available.toString()}&query=${query}`
-        console.log('URL GERADA', url)
         const response = await fetch(url);
         return await response.json();
     }

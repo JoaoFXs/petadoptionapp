@@ -13,19 +13,26 @@ export interface AvailablePetsProps {
 
 const Available: React.FC<AvailablePetsProps> = () => {
   const [query, setQuery] = useState('');
-  const [available, setAvailable] = useState(false);
+  const [available, setAvailable] = useState(true);
   const [pets, setPets] = useState<Pet[]>([]);
   const usePet = usePetService();
 
-  async function searchPets() {
-      const resultPets = await usePet.search(query, available); 
-      setPets(resultPets);
-      
+async function searchPets(availableChoice?: boolean) {
+  let finalAvailable = available;
+
+  if (availableChoice !== undefined) {
+    finalAvailable = !availableChoice;
+    setAvailable(finalAvailable);
+  }
+
+
+    const resultPets = await usePet.search(query, finalAvailable);
+    setPets(resultPets);
   }
 
   function renderPetsCard(pet: Pet){
       return (
-        <PetCard key={pet?.url} name={pet?.name} breed={pet?.breed} age={pet?.age}/> 
+        <PetCard key={pet?.url} name={pet?.name} breed={pet?.breed} age={pet?.age} url={pet?.url}/> 
       );
   }
 
@@ -48,7 +55,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 sm:ml-4">
             <button
-              onClick={searchPets}
+              onClick={() => searchPets()}
               type="submit"
               className="px-5 py-3 rounded-full font-semibold bg-green-500 text-white hover:bg-green-600 shadow-md transition"
             >
@@ -56,10 +63,11 @@ const Available: React.FC<AvailablePetsProps> = () => {
             </button>
 
             <button
-              onClick={() => setAvailable(!available)}
+              onClick={() => searchPets(available)}
+              type="submit"
               className={`px-5 py-3 rounded-full font-semibold transition-all duration-200
                 ${
-                  available
+                  available == true
                     ? 'bg-yellow-500 text-white ring-2 ring-yellow-700 shadow-sm'
                     : 'bg-gray-200 text-gray-500 shadow-lg'
                 }
