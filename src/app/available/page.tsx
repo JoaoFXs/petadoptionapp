@@ -30,12 +30,33 @@ const Available: React.FC<AvailablePetsProps> = () => {
   function renderPetsCard(pet: Pet) {
     return (
       <PetCard
-        key={pet?.url}
-        name={pet?.name}
-        breed={pet?.breed}
-        age={pet?.age}
-        url={pet?.url}
-      />
+            key={pet?.id}
+            name={pet?.name}
+            url={pet?.url}
+            breed={pet?.breed}
+            age={pet?.age}
+            type={pet?.type}
+            sex={pet?.sex}
+            size={pet?.size}
+            weight={pet?.weight}
+            photo={pet?.photo}
+            neutered={pet?.neutered}
+            vaccinated={pet?.vaccinated}
+            dewormed={pet?.dewormed}
+            diseases={pet?.diseases}
+            specialNeeds={pet?.specialNeeds}
+            temperament={pet?.temperament}
+            socialWith={pet?.socialWith}
+            available={pet?.available}
+            availabilityDate={pet?.availabilityDate}
+            adoptedByUser={pet?.adoptedByUser}
+            adoptionDate={pet?.adoptionDate}
+            rescueLocation={pet?.rescueLocation}
+            history={pet?.history}
+            microchip={pet?.microchip}
+            notes={pet?.notes}
+            tags={pet?.tags}
+          />
     );
   }
 

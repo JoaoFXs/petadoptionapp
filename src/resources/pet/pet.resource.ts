@@ -18,7 +18,7 @@ export class Pet {
   socialWith?: string;
   available?: boolean;
   availabilityDate?: string; 
-  adoptedByUser?: Pet; 
+  adoptedByUser?: string; 
   adoptionDate?: string;
   rescueLocation?: string;
   history?: string;
