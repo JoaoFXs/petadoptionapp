@@ -1,8 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
-import { IconType } from 'react-icons';
-import { FaBirthdayCake, FaCat, FaDog, FaTimes} from 'react-icons/fa';
 
+import { AiOutlineCheckCircle } from "react-icons/ai";
+import { MdCancel } from "react-icons/md"; 
+import {
+  FaDog, FaCat, FaMars, FaVenus, FaBirthdayCake, FaSyringe, FaWeightHanging, FaNotesMedical,
+  FaPaw, FaMapMarkerAlt, FaMicroscope, FaMicrochip, FaCheck, FaTimes
+} from "react-icons/fa";
+import { GiHighShot, GiSelfLove } from "react-icons/gi";
+import { LuRuler } from "react-icons/lu";
+import { MdPets } from "react-icons/md";
 export class PetCardProps {
   name?: string;
   url?: string;
@@ -10,7 +17,7 @@ export class PetCardProps {
   age?: number;
   type?: string;
   sex?: string;
-  size?: string;
+  size?: string | undefined;
   weight?: number;
   photo?: Blob | string;
   neutered?: boolean;
@@ -37,20 +44,39 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
 
 
   const openPetDetails = () => setShowDetails(prev => !prev);
-  
+  function capitalizeFirstLetter(text: string) {
+    if (!text) return "";
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
+
+  function setDewormed(isDewormed: boolean){
+    return isDewormed == true ? <AiOutlineCheckCircle className="mr-2 text-green-600"/> : <MdCancel  className="mr-2 text-red-600"/>
+  }
+ 
   function defineCatOrDog(){
     return pet.type?.match("CAT") ? <FaCat/> : <FaDog/>;
   }
 
+  function defineMaleorFemale(){
+    return pet.sex == "MALE" ? <FaMars className=' text-blue-300 '/> : <FaVenus className='text-pink-300'/>;
+ 
+  }
+  const booleanIcon = (val: boolean) => (
+  val ? <FaCheck className="text-green-500 mr-1" /> : <FaTimes className="text-red-500 mr-1" />
+);
+
   return (
     <>
      <button onClick={openPetDetails} className=" shadow-md transition duration-300 font-semibold">
+      
         <motion.div
           whileHover={{ scale: 1.03 }}
           transition={{ type: 'spring', stiffness: 200 }}
           className="bg-white shadow-md rounded-2xl overflow-hidden border border-green-100 hover:shadow-xl transition-all"
         >
+          
           <div className="overflow-hidden">
+             
             <img
               src={pet.url}
               alt={pet.name}
@@ -58,10 +84,18 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
             />
           </div>
           <div className="flex flex-col items-start p-5">
-            <h2 className="text-2xl font-bold text-green-700">{pet.name}{defineCatOrDog()}</h2>
+            <div className="flex flex-row items-center justify-between w-full">
+              <h2 className="flex items-center gap-1 text-2xl font-bold text-green-700">
+                {pet.name}
+                {defineMaleorFemale()}
+              </h2>
+              
+              <MdPets className={pet.available ? "text-green-600" : "text-red-600"}   title={pet.available ? "Available for adoption" : "Not Available for adoption"} />
+            </div>
+            <p className="text-green-700">{defineCatOrDog()}</p>
             <p className="text-sm text-gray-500 mt-1"> {pet.breed}</p>
-            <p className="text-sm text-gray-500">Age: {pet.age} year(s)</p>
-            
+            <p className="flex flex-row items-center gap-2 text-sm text-gray-500"><FaBirthdayCake/> {pet.age} year(s)</p>
+         
           </div>
         </motion.div>
       </button>
@@ -100,27 +134,41 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
               </div>
 
               {/* Conteúdo */}
-              <div className="md:w-1/2 w-full p-6 flex flex-col justify-between gap-3">
-                <div>
-                  <h2 className="text-3xl font-extrabold text-green-700 mb-2">{pet.name}</h2>
-                  <p className="flex items-center text-md text-gray-600 mb-2">
-                    <FaDog className="mr-2 text-green-500" /> <span>Breed: {pet.breed}</span>
-                  </p>
-                  <p className="flex items-center text-md text-gray-600 mb-4">
-                    <FaBirthdayCake className="mr-2 text-pink-500" /> <span>Age: {pet.age} year(s)</span>
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    <span className="font-medium">About:</span> This pet is affectionate, healthy and ready to find a new home. He loves to play, gets along well with children and other animals, and is up to date on all his vaccinations.
-                  </p>
-                </div>
+                <div className="md:w-1/2 w-full p-6 flex flex-col justify-between gap-4">
+                    <div>
+                      <h2 className="flex items-center gap-2 justify-center text-3xl font-extrabold text-green-700 mb-3">
+                        {pet.name} {defineMaleorFemale()}
+                      </h2>
 
-                <button
-                  onClick={openPetDetails}
-                  className="mt-6 self-start bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
-                >
-                  button temp
-                </button>
-              </div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-700 text-md">
+                        <p className="flex items-center"><FaDog className="text-green-500 mr-2" /> {pet.breed}</p>
+                        <p className="flex items-center"><LuRuler className="text-green-500 mr-2" /> {pet.size}</p>
+                        <p className="flex items-center"><FaWeightHanging className="text-blue-500 mr-2" /> {pet.weight} kg</p>
+                        <p className="flex items-center"><FaBirthdayCake className="text-pink-500 mr-2" /> {pet.age} year(s)</p>
+                        <p className="flex items-center">{booleanIcon(!!pet.vaccinated)} Vaccinated</p>
+                        <p className="flex items-center">{booleanIcon(!!pet.dewormed)} Dewormed</p>
+                        <p className="flex items-center">{booleanIcon(!!pet.neutered)} Neutered</p>
+                        <p className="flex items-center"><FaPaw className="text-purple-600 mr-2" /> {pet.temperament}</p>
+                        {pet.diseases && <p className="flex items-center"><FaNotesMedical className="text-red-400 mr-2" /> {pet.diseases}</p>}
+                        {pet.specialNeeds && <p className="flex items-center"><GiSelfLove className="text-rose-400 mr-2" /> {pet.specialNeeds}</p>}
+                        {pet.microchip && <p className="flex items-center"><FaMicrochip className="text-gray-500 mr-2" /> Microchip #{pet.microchip}</p>}
+                        <p className="flex items-center"><FaMapMarkerAlt className="text-orange-500 mr-2" /> {pet.rescueLocation}</p>
+                      </div>
+
+                      {pet.notes && (
+                        <p className="text-sm text-gray-500 mt-4 leading-relaxed">
+                          <span className="font-medium">📝 {pet.notes}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={openPetDetails}
+                      className="mt-6 self-start bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
+                    >
+                      Ver Detalhes
+                    </button>
+                  </div>
             </motion.div>
           </motion.div>
         )}
