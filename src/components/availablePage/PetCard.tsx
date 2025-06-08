@@ -151,7 +151,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                         <p className="flex items-center"><FaPaw className="text-purple-600 mr-2" /> {pet.temperament}</p>
                         {pet.diseases && <p className="flex items-center"><FaNotesMedical className="text-red-400 mr-2" /> {pet.diseases}</p>}
                         {pet.specialNeeds && <p className="flex items-center"><GiSelfLove className="text-rose-400 mr-2" /> {pet.specialNeeds}</p>}
-                        {pet.microchip && <p className="flex items-center"><FaMicrochip className="text-gray-500 mr-2" /> Microchip #{pet.microchip}</p>}
+                        {pet.microchip && <p className="flex items-center"><FaMicrochip className="text-gray-500 mr-2" /> Microchipped #{pet.microchip}</p>}
                         <p className="flex items-center"><FaMapMarkerAlt className="text-orange-500 mr-2" /> {pet.rescueLocation}</p>
                       </div>
 
@@ -166,7 +166,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                       onClick={openPetDetails}
                       className="mt-6 self-start bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
                     >
-                      Ver Detalhes
+                      button temp
                     </button>
                   </div>
             </motion.div>
