@@ -17,7 +17,10 @@ export class Pet {
   temperament?: string;
   socialWith?: string;
   available?: boolean;
-  availabilityDate?: string; 
+  city?: string;
+  address?: string;
+  province?: string;
+  cep?: string;
   adoptedByUser?: string; 
   adoptionDate?: string;
   rescueLocation?: string;

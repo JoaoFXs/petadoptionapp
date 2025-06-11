@@ -28,10 +28,12 @@ export class PetCardProps {
   temperament?: string;
   socialWith?: string;
   available?: boolean;
-  availabilityDate?: string;
+  city?: string;
+  province?: string;
+  cep?: string;
+  address?: string;
   adoptedByUser?: string;
   adoptionDate?: string;
-  rescueLocation?: string;
   history?: string;
   microchip?: boolean;
   notes?: string;
@@ -152,7 +154,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                         {pet.diseases && <p className="flex items-center"><FaNotesMedical className="text-red-400 mr-2" /> {pet.diseases}</p>}
                         {pet.specialNeeds && <p className="flex items-center"><GiSelfLove className="text-rose-400 mr-2" /> {pet.specialNeeds}</p>}
                         {pet.microchip && <p className="flex items-center"><FaMicrochip className="text-gray-500 mr-2" /> Microchipped #{pet.microchip}</p>}
-                        <p className="flex items-center"><FaMapMarkerAlt className="text-orange-500 mr-2" /> {pet.rescueLocation}</p>
+                        <p className="flex items-center"><FaMapMarkerAlt className="text-orange-500 mr-2" /> {pet.city},{pet.province}</p>
                       </div>
 
                       {pet.notes && (
@@ -164,9 +166,9 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
 
                     <button
                       onClick={openPetDetails}
-                      className="mt-6 self-start bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
+                      className="mt-6 self-stretch bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
                     >
-                      button temp
+                      Adopt this Pet
                     </button>
                   </div>
             </motion.div>

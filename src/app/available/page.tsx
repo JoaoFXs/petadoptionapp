@@ -48,10 +48,12 @@ const Available: React.FC<AvailablePetsProps> = () => {
             temperament={pet?.temperament}
             socialWith={pet?.socialWith}
             available={pet?.available}
-            availabilityDate={pet?.availabilityDate}
+            city={pet?.city}
+            address={pet?.address}
+            cep={pet?.address}
+            province={pet?.province}
             adoptedByUser={pet?.adoptedByUser}
             adoptionDate={pet?.adoptionDate}
-            rescueLocation={pet?.rescueLocation}
             history={pet?.history}
             microchip={pet?.microchip}
             notes={pet?.notes}
@@ -79,7 +81,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
             type="text"
             placeholder="Search by name or breed..."
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full sm:max-w-xl px-6 py-3 rounded-full border border-green-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+            className="text-gray-700 w-full sm:max-w-xl px-6 py-3 rounded-full border border-green-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           />
 
           <div className="flex flex-col sm:flex-row gap-4 sm:ml-4">
