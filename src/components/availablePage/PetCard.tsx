@@ -10,6 +10,7 @@ import {
 import { GiHighShot, GiSelfLove } from "react-icons/gi";
 import { LuRuler } from "react-icons/lu";
 import { MdPets } from "react-icons/md";
+import { useCommonService } from '@/resources';
 export class PetCardProps {
   name?: string;
   url?: string;
