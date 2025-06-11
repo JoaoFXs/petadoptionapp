@@ -4,7 +4,6 @@ import { useAuth } from '@/resources'
 
 class PetService{
     baseURL: string = process.env.NEXT_PUBLIC_API_URL + '/v1/pet';
-    auth = useAuth();
 
 async search(query: string = "", available?: boolean | null ): Promise<Pet[]> {
   let url = `${this.baseURL}?`;

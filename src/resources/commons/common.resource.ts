@@ -1,6 +1,6 @@
 export class LocationsMap{
-  city?: string;
   address?: string;
-  province?: string;
+  city?: string;
   cep?: string;
+  province?: string;
 }

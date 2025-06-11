@@ -10,7 +10,7 @@ import {
 import { GiHighShot, GiSelfLove } from "react-icons/gi";
 import { LuRuler } from "react-icons/lu";
 import { MdPets } from "react-icons/md";
-import { useCommonService } from '@/resources';
+import { LocationsMap, useCommonService } from '@/resources';
 export class PetCardProps {
   name?: string;
   url?: string;
@@ -43,10 +43,12 @@ export class PetCardProps {
 
 export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
-
-
+    const [locations, setLocations] = useState<LocationsMap[]>([]);
+  const teste1 = useCommonService();
 
   const openPetDetails = () => setShowDetails(prev => !prev);
+
+
   function capitalizeFirstLetter(text: string) {
     if (!text) return "";
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -166,7 +168,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                     </div>
 
                     <button
-                      onClick={openPetDetails}
+                 
                       className="mt-6 self-stretch bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
                     >
                       Adopt this Pet
