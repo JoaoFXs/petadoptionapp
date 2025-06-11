@@ -48,6 +48,11 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
 
   const openPetDetails = () => setShowDetails(prev => !prev);
 
+  async function teste(){
+    const teste3 = await teste1.findAllLocations();
+    console.log(locations)
+    setLocations(teste3);
+  }
 
   function capitalizeFirstLetter(text: string) {
     if (!text) return "";
@@ -168,7 +173,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                     </div>
 
                     <button
-                 
+                      onClick={teste}
                       className="mt-6 self-stretch bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
                     >
                       Adopt this Pet
