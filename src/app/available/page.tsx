@@ -13,6 +13,7 @@ export interface AvailablePetsProps {
 
 const Available: React.FC<AvailablePetsProps> = () => {
   const [arrowIcon, setArrowIcon] = useState(true);
+    const [arrowIcon2, setArrowIcon2] = useState(true);
   const [query, setQuery] = useState('');
   const [available, setAvailable] = useState<boolean | null>(null); // null = sem filtro
   const [pets, setPets] = useState<Pet[]>([]);
@@ -21,6 +22,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
 
+
+  
 
   async function toggleLocations(){
     setArrowIcon(!arrowIcon);
@@ -39,10 +42,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   }
 
   function toggleAvailable() {
-    setAvailable(prev => {
-      const newAvailable = prev === true ? false : prev === false ? null : true;
-      return newAvailable;
-    });
+   setArrowIcon2(!arrowIcon2);
   }
 
   function renderPetsCard(pet: Pet) {
@@ -84,11 +84,6 @@ const Available: React.FC<AvailablePetsProps> = () => {
     return pets.map(renderPetsCard);
   }
 
-  function getAvailableLabel() {
-    if (available === true) return 'Available';
-    if (available === false) return 'Not Available';
-    return 'All';
-  }
 
   return (
     <Template>
@@ -110,27 +105,13 @@ const Available: React.FC<AvailablePetsProps> = () => {
             >
               Search
             </button>
-
-            <button
-              onClick={toggleAvailable}
-              type="button"
-              className={`px-5 py-3 rounded-full font-semibold transition-all duration-200
-                ${
-                  available === true
-                    ? 'bg-yellow-500 text-white ring-2 ring-yellow-700 shadow-sm'
-                    : available === false
-                    ? 'bg-red-500 text-white ring-2 ring-red-700 shadow-sm'
-                    : 'bg-gray-200 text-gray-600 shadow-lg'
-                }
-              `}
-            >
-              {getAvailableLabel()}
-            </button>
               <button onClick={openFilters} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
                   <FaMapMarkerAlt />
                   Filtros
               </button>
                 
+
+                {/* Aqui começa o filtro*/}
               <AnimatePresence>
                 {showFilters && (
                   <motion.div
@@ -167,6 +148,38 @@ const Available: React.FC<AvailablePetsProps> = () => {
                           <h3 className="text-xl text-gray-800 font-semibold">Locations</h3>
                         </button>
                         {!arrowIcon &&(
+                        <ul className=" space-y-2 text-gray-700 max-h-64 overflow-y-auto">
+                          {locations.map((loc, index) => (
+                            <li key={index} className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id={`loc-${index}`}
+                                className="form-checkbox h-4 w-4 text-green-500"
+                              />
+                              <label htmlFor={`loc-${index}`} className="cursor-pointer">
+                                {loc.city}
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                        )}
+                      </div>
+
+
+                      <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
+                
+                        <button onClick={toggleAvailable} className="flex flex-row items-center gap-">
+                          {arrowIcon2 ? (
+                            <FaChevronDown className="text-gray-800" />
+                            
+                            ):(
+                               <FaChevronRight className="text-gray-800" />
+                            )
+                          }
+                          
+                          <h3 className="text-xl text-gray-800 font-semibold">Available</h3>
+                        </button>
+                        {!arrowIcon2 &&(
                         <ul className=" space-y-2 text-gray-700 max-h-64 overflow-y-auto">
                           {locations.map((loc, index) => (
                             <li key={index} className="flex items-center space-x-2">
