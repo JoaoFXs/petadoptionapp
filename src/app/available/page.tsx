@@ -23,7 +23,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const useCommons = useCommonService();
 
 
-  
+
 
   async function toggleLocations(){
     setArrowIcon(!arrowIcon);
@@ -129,7 +129,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                     >
                       <button
                         className="absolute top-3 right-4 text-gray-600 hover:text-black"
-                        onClick={toggleLocations}
+                        onClick={openFilters}
                       >
                         <FaTimes />
                       </button>
