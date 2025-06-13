@@ -107,7 +107,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
             </button>
               <button onClick={openFilters} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
                   <FaMapMarkerAlt />
-                  Filtros
+                  Filters
               </button>
                 
 
