@@ -12,26 +12,44 @@ export interface AvailablePetsProps {
 }
 
 const Available: React.FC<AvailablePetsProps> = () => {
-  const [arrowIcon, setArrowIcon] = useState(true);
-    const [arrowIcon2, setArrowIcon2] = useState(true);
+    const [toggles, setToggles] = useState({
+      locations: true,
+      available: true,
+      breed: true
+    });
+
   const [query, setQuery] = useState('');
   const [available, setAvailable] = useState<boolean | null>(null); // null = sem filtro
   const [pets, setPets] = useState<Pet[]>([]);
   const usePet = usePetService();
   const [locations, setLocations] = useState<LocationsMap[]>([]);
+   const [breed, setBreed] = useState<string[]>([]);
   const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
 
 
 
+  const toggle = (key: keyof typeof toggles) => {
+    setToggles(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   async function toggleLocations(){
-    setArrowIcon(!arrowIcon);
+     toggle('locations'); // alterna o estado
+
     const data = await useCommons.findAllLocations();
     setLocations(data);
     console.log(locations)
   }
+
+    async function toggleBreed(){
+     toggle('breed'); // alterna o estado
+
+    const data = await useCommons.findAllBreed();
+    setBreed(data);
+    console.log(locations)
+  }
+
    function openFilters(){
     setShowFilters((prev) => !prev);
   }
@@ -42,9 +60,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
     setPets(resultPets);
   }
 
-  function toggleAvailable() {
-   setArrowIcon2(!arrowIcon2);
-  }
+
 
   function renderPetsCard(pet: Pet) {
     return (
@@ -138,9 +154,11 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       </button>
 
                       {/* Localizações disponiveis */}
-                      <FilterItems arrowIcon={arrowIcon} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'></FilterItems>
+                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'></FilterItems>
                       {/* Filtro Available */}
-                      <FilterItems arrowIcon={arrowIcon2}  listItems={availableDescription} onClick={toggleAvailable} labelText='Available'></FilterItems>
+                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'></FilterItems>
+                      {/*  */}
+                      <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
             
                     </motion.div>
                   </motion.div>

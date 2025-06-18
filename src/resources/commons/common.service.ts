@@ -1,10 +1,16 @@
 import { LocationsMap } from "./common.resource";
 
 class CommonService{
-    baseURL: string = process.env.NEXT_PUBLIC_API_URL + '/v1/common/locations';
+    baseURL: string = process.env.NEXT_PUBLIC_API_URL + '/v1/common';
 
     async findAllLocations(): Promise<LocationsMap[]>{
-        let url = `${this.baseURL}`;
+        let url = `${this.baseURL}/location`;
+        const response = await fetch(url); 
+        return await response.json();
+    }
+
+    async findAllBreed(): Promise<[]>{
+        let url = `${this.baseURL}/breed`;
         const response = await fetch(url); 
         return await response.json();
     }
