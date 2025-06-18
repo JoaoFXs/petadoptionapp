@@ -15,8 +15,14 @@ class CommonService{
         return await response.json();
     }
 
-      async findAllAges(): Promise<[]>{
+    async findAllAges(): Promise<[]>{
         let url = `${this.baseURL}/age`;
+        const response = await fetch(url); 
+        return await response.json();
+    }
+
+    async findAllType(): Promise<[]>{
+        let url = `${this.baseURL}/type`;
         const response = await fetch(url); 
         return await response.json();
     }

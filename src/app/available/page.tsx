@@ -16,7 +16,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
       locations: true,
       available: true,
       breed: true,
-      age: true
+      age: true,
+      type: true
     });
 
   const [query, setQuery] = useState('');
@@ -24,8 +25,9 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const usePet = usePetService();
   const [locations, setLocations] = useState<LocationsMap[]>([]);
-   const [breed, setBreed] = useState<string[]>([]);
-     const [age, setAge] = useState<string[]>([]);
+  const [breed, setBreed] = useState<string[]>([]);
+  const [age, setAge] = useState<string[]>([]);
+  const [type, setType] = useState<string[]>([]);
   const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
@@ -49,7 +51,12 @@ const Available: React.FC<AvailablePetsProps> = () => {
       const data = await useCommons.findAllBreed();
      setBreed(data);
     }
+    async function toggleType(){
+     toggle('type'); // alterna o estado
 
+      const data = await useCommons.findAllType();
+     setType(data);
+    }
     async function toggleAge(){
      toggle('age'); // alterna o estado
 
@@ -167,6 +174,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
             
                      <FilterItems arrowIcon={toggles.age}  listItems={age} onClick={toggleAge} labelText='Age'></FilterItems>
+                     <FilterItems arrowIcon={toggles.type}  listItems={type} onClick={toggleType} labelText='Type'></FilterItems>
             
                     </motion.div>
                   </motion.div>
