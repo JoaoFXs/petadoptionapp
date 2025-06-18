@@ -1,8 +1,8 @@
 'use client';
-import { InputText, Template } from '@/components';
+import { FilterItems, InputText, Template } from '@/components';
 import React, { useState } from 'react';
 import { usePetService } from '@/resources/pet/pet.service';
-import { Button, PetCard } from '@/components';
+import { Button, PetCard,  } from '@/components';
 import { Pet, LocationsMap } from '@/resources';
 import { useCommonService } from '@/resources';
 import { FaMapMarkerAlt, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
@@ -136,69 +136,12 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       >
                         <FaTimes />
                       </button>
-                      {/* Localizações disponiveis */}
-                      <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
-                
-                        <button onClick={toggleLocations} className="flex flex-row items-center gap-">
-                          {arrowIcon ? (
-                            <FaChevronDown className="text-gray-800" />
-                            
-                            ):(
-                               <FaChevronRight className="text-gray-800" />
-                            )
-                          }
-                          
-                          <h3 className="text-xl text-gray-800 font-semibold">Locations</h3>
-                        </button>
-                        {!arrowIcon &&(
-                        <ul className=" space-y-2 text-gray-700 max-h-64 overflow-y-auto">
-                          {locations.map((loc, index) => (
-                            <li key={index} className="flex items-center space-x-2">
-                              <input
-                                type="checkbox"
-                                id={`loc-${index}`}
-                                className="form-checkbox h-4 w-4 text-green-500"
-                              />
-                              <label htmlFor={`loc-${index}`} className="cursor-pointer">
-                                {loc.city}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                        )}
-                      </div>
 
-                    {/* Filtro Available */}
-                      <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
-                
-                        <button onClick={toggleAvailable} className="flex flex-row items-center gap-">
-                          {arrowIcon2 ? (
-                            <FaChevronDown className="text-gray-800" />
-                            
-                            ):(
-                               <FaChevronRight className="text-gray-800" />
-                            )
-                          }
-                          
-                          <h3 className="text-xl text-gray-800 font-semibold">Available</h3>
-                        </button>
-                        {!arrowIcon2 &&(
-                        <ul className=" space-y-2 text-gray-700 max-h-64 overflow-y-auto">
-                          {availableDescription.map((loc, index) => (
-                            <li key={index} className="flex items-center space-x-2">
-                              <input
-                                type="checkbox"
-                                id={`loc-${index}`}
-                                className="form-checkbox h-4 w-4 text-green-500"
-                              />
-                              <label htmlFor={`loc-${index}`} className="cursor-pointer">
-                                {loc}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                        )}
-                      </div>
+                      {/* Localizações disponiveis */}
+                      <FilterItems arrowIcon={arrowIcon} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'></FilterItems>
+                      {/* Filtro Available */}
+                      <FilterItems arrowIcon={arrowIcon2}  listItems={availableDescription} onClick={toggleAvailable} labelText='Available'></FilterItems>
+            
                     </motion.div>
                   </motion.div>
                 )}
