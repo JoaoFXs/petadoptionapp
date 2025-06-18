@@ -19,6 +19,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const usePet = usePetService();
   const [locations, setLocations] = useState<LocationsMap[]>([]);
+  const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
 
@@ -127,13 +128,15 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                       className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row relative z-50"
                     >
+
+                      {/* Botão de fechar dos filtros*/}
                       <button
                         className="absolute top-3 right-4 text-gray-600 hover:text-black"
                         onClick={openFilters}
                       >
                         <FaTimes />
                       </button>
-
+                      {/* Localizações disponiveis */}
                       <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
                 
                         <button onClick={toggleLocations} className="flex flex-row items-center gap-">
@@ -165,7 +168,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                         )}
                       </div>
 
-
+                    {/* Filtro Available */}
                       <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
                 
                         <button onClick={toggleAvailable} className="flex flex-row items-center gap-">
@@ -181,7 +184,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                         </button>
                         {!arrowIcon2 &&(
                         <ul className=" space-y-2 text-gray-700 max-h-64 overflow-y-auto">
-                          {locations.map((loc, index) => (
+                          {availableDescription.map((loc, index) => (
                             <li key={index} className="flex items-center space-x-2">
                               <input
                                 type="checkbox"
@@ -189,7 +192,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                                 className="form-checkbox h-4 w-4 text-green-500"
                               />
                               <label htmlFor={`loc-${index}`} className="cursor-pointer">
-                                {loc.city}
+                                {loc}
                               </label>
                             </li>
                           ))}
