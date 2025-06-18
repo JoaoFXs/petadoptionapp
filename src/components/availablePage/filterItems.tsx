@@ -12,7 +12,7 @@ export class FilterItemsCardProps<T = any>{
 
 export const FilterItems: React.FC<FilterItemsCardProps> = (filter: FilterItemsCardProps) =>{
     return (
-        <div className="flex p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
+        <div className="flex basis-1/3 p-6 max-h-[80vh] overflow-y-auto w-full gap-2">
                         
                                 <button onClick={filter.onClick} className="flex flex-row items-center gap-">
                                   {filter.arrowIcon ? (

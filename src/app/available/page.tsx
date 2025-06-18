@@ -15,7 +15,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
     const [toggles, setToggles] = useState({
       locations: true,
       available: true,
-      breed: true
+      breed: true,
+      age: true
     });
 
   const [query, setQuery] = useState('');
@@ -24,6 +25,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const usePet = usePetService();
   const [locations, setLocations] = useState<LocationsMap[]>([]);
    const [breed, setBreed] = useState<string[]>([]);
+     const [age, setAge] = useState<string[]>([]);
   const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
@@ -39,17 +41,21 @@ const Available: React.FC<AvailablePetsProps> = () => {
 
     const data = await useCommons.findAllLocations();
     setLocations(data);
-    console.log(locations)
   }
 
     async function toggleBreed(){
      toggle('breed'); // alterna o estado
 
-    const data = await useCommons.findAllBreed();
-    setBreed(data);
-    console.log(locations)
-  }
+      const data = await useCommons.findAllBreed();
+     setBreed(data);
+    }
 
+    async function toggleAge(){
+     toggle('age'); // alterna o estado
+
+      const data = await useCommons.findAllAges();
+     setAge(data);
+    }
    function openFilters(){
     setShowFilters((prev) => !prev);
   }
@@ -142,7 +148,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.9, opacity: 0 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row relative z-50"
+                      className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl flex flex-col flex-wrap md:flex-row relative z-50"
                     >
 
                       {/* Botão de fechar dos filtros*/}
@@ -159,6 +165,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'></FilterItems>
                       {/*  */}
                       <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
+            
+                     <FilterItems arrowIcon={toggles.age}  listItems={age} onClick={toggleAge} labelText='Age'></FilterItems>
             
                     </motion.div>
                   </motion.div>
