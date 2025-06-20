@@ -26,6 +26,12 @@ class CommonService{
         const response = await fetch(url); 
         return await response.json();
     }
+
+     async findAllSex(): Promise<[]>{
+        let url = `${this.baseURL}/sex`;
+        const response = await fetch(url); 
+        return await response.json();
+    }
 }
 
 

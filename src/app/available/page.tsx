@@ -17,7 +17,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
       available: true,
       breed: true,
       age: true,
-      type: true
+      type: true,
+      sex: true
     });
 
   const [query, setQuery] = useState('');
@@ -28,6 +29,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const [breed, setBreed] = useState<string[]>([]);
   const [age, setAge] = useState<string[]>([]);
   const [type, setType] = useState<string[]>([]);
+    const [sex, setSex] = useState<string[]>([]);
   const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
@@ -62,6 +64,13 @@ const Available: React.FC<AvailablePetsProps> = () => {
 
       const data = await useCommons.findAllAges();
      setAge(data);
+    }
+
+    async function toggleSex(){
+     toggle('sex'); // alterna o estado
+
+      const data = await useCommons.findAllSex();
+     setSex(data);
     }
    function openFilters(){
     setShowFilters((prev) => !prev);
@@ -141,7 +150,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
               </button>
                 
 
-                {/* Aqui começa o filtro*/}
+            {/* Aqui começa o filtro*/}
               <AnimatePresence>
                 {showFilters && (
                   <motion.div
@@ -175,6 +184,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
             
                      <FilterItems arrowIcon={toggles.age}  listItems={age} onClick={toggleAge} labelText='Age'></FilterItems>
                      <FilterItems arrowIcon={toggles.type}  listItems={type} onClick={toggleType} labelText='Type'></FilterItems>
+                     <FilterItems arrowIcon={toggles.sex}  listItems={sex} onClick={toggleSex} labelText='Sex'></FilterItems>
             
                     </motion.div>
                   </motion.div>
