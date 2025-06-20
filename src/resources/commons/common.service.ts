@@ -37,6 +37,11 @@ class CommonService{
         const response = await fetch(url); 
         return await response.json();
     }
+    async findAllTemperament(): Promise<[]>{
+        let url = `${this.baseURL}/temperament`;
+        const response = await fetch(url); 
+        return await response.json();
+    }
 }
 
 
