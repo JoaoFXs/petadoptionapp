@@ -32,6 +32,11 @@ class CommonService{
         const response = await fetch(url); 
         return await response.json();
     }
+    async findAllSize(): Promise<[]>{
+        let url = `${this.baseURL}/size`;
+        const response = await fetch(url); 
+        return await response.json();
+    }
 }
 
 
