@@ -194,9 +194,9 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       </button>
 
                       {/* Localizações disponiveis */}
-                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'></FilterItems>
+                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'   onSelectionChange={(csv) => { console.log("Enviar para backend:", csv);}}></FilterItems>
                       {/* Filtro Available */}
-                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'></FilterItems>
+                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'  onSelectionChange={(csv) => { console.log("Enviar para backend:", csv);}}></FilterItems>
                       {/*  */}
                       <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
             
