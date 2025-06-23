@@ -37,8 +37,38 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
+const [filters, setFilters] = useState<{
+  city: string[],
+  available: string[],
+  breed: string[],
+  age: string[],
+  type: string[],
+  sex: string[],
+  size: string[],
+  temperament: string[]
+}>({
+  city: [],
+  available: [],
+  breed: [],
+  age: [],
+  type: [],
+  sex: [],
+  size: [],
+  temperament: []
+});
 
-
+function onSelectionChange(key: keyof typeof filters, valueCSV: string) {
+  const values = valueCSV.split(',').map(v => v.trim()).filter(Boolean);
+  setFilters(prev => ({
+    ...prev,
+    [key]: values
+  }));
+}
+async function searchPetsByInput() {
+    console.log(">>" + query)
+    const resultPets = await usePet.search(query.trim(), available);
+    setPets(resultPets);
+  }
 
   const toggle = (key: keyof typeof toggles) => {
     setToggles(prev => ({ ...prev, [key]: !prev[key] }));
@@ -95,11 +125,13 @@ const Available: React.FC<AvailablePetsProps> = () => {
   }
 
   
-  async function searchPets() {
-    console.log(">>" + query)
-    const resultPets = await usePet.search(query.trim(), available);
-    setPets(resultPets);
-  }
+async function searchPets() {
+  // junta todos os filtros em uma única string separada por vírgula
+  const allValues = Object.values(filters).flat().join(',');
+  console.log(">>", allValues);
+  const resultPets = await usePet.search(allValues.trim(), available);
+  setPets(resultPets);
+}
 
 
 
@@ -157,7 +189,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 sm:ml-4">
             <button
-              onClick={searchPets}
+              onClick={searchPetsByInput}
               type="submit"
               className="px-5 py-3 rounded-full font-semibold bg-green-500 text-white hover:bg-green-600 shadow-md transition"
             >
@@ -194,17 +226,38 @@ const Available: React.FC<AvailablePetsProps> = () => {
                         <FaTimes />
                       </button>
 
-                      {/* Localizações disponiveis */}
-                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'   onSelectionChange={(csv) => { setQuery(csv); console.log(csv)}}></FilterItems>
-                      {/* Filtro Available */}
-                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'  onSelectionChange={(csv) => {setQuery(csv); console.log(csv)}}></FilterItems>
-                      {/*  */}
-                      <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
-                     <FilterItems arrowIcon={toggles.age}  listItems={age} onClick={toggleAge} labelText='Age'></FilterItems>
-                     <FilterItems arrowIcon={toggles.type}  listItems={type} onClick={toggleType} labelText='Type'></FilterItems>
-                     <FilterItems arrowIcon={toggles.sex}  listItems={sex} onClick={toggleSex} labelText='Sex'></FilterItems>
-                     <FilterItems arrowIcon={toggles.size}  listItems={size} onClick={toggleSize} labelText='Size'></FilterItems>
-                     <FilterItems arrowIcon={toggles.temperament}  listItems={temperament} onClick={toggleTemperament} labelText='Temperament'></FilterItems>
+                    <FilterItems 
+                        arrowIcon={toggles.locations} 
+                        itemLabelKey="city" 
+                        listItems={locations} 
+                        onClick={toggleLocations} 
+                        labelText='Locations' 
+                        onSelectionChange={(csv) => onSelectionChange("city", csv)} 
+                      />
+
+                      <FilterItems 
+                        arrowIcon={toggles.available}  
+                        listItems={availableDescription} 
+                        onClick={() => toggle('available')} 
+                        labelText='Available'  
+                        onSelectionChange={(csv) => onSelectionChange("available", csv)} 
+                      />
+
+                      <FilterItems labelText='Breed' listItems={breed} arrowIcon={toggles.breed} onClick={toggleBreed} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
+                      <FilterItems labelText='Age' listItems={age} arrowIcon={toggles.age} onClick={toggleAge} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
+                      <FilterItems labelText='Type' listItems={type} arrowIcon={toggles.type} onClick={toggleType} onSelectionChange={(csv) => onSelectionChange("type", csv)} />
+                      <FilterItems labelText='Sex' listItems={sex} arrowIcon={toggles.sex} onClick={toggleSex} onSelectionChange={(csv) => onSelectionChange("sex", csv)} />
+                      <FilterItems labelText='Size' listItems={size} arrowIcon={toggles.size} onClick={toggleSize} onSelectionChange={(csv) => onSelectionChange("size", csv)} />
+                      <FilterItems labelText='Temperament' listItems={temperament} arrowIcon={toggles.temperament} onClick={toggleTemperament} onSelectionChange={(csv) => onSelectionChange("temperament", csv)} />
+
+                    <button
+                      onClick={searchPets}
+                      type="submit"
+                      className="absolute bottom-4 right-4 px-5 py-2 border border-gray-800 text-gray-800 rounded-md font-semibold hover:bg-gray-100 transition"
+                    >
+                      Search
+                    </button>
+                   
                     </motion.div>
                   </motion.div>
                 )}

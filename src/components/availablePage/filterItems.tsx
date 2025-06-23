@@ -9,6 +9,7 @@ export class FilterItemsCardProps<T = any>{
     itemLabelKey?: keyof T; // <== chave dinâmica
     labelText?: string;
     onSelectionChange?: (selectedValues: string) => void; //envia para o backend
+    teste?: string[];
 }
 
 
@@ -22,7 +23,6 @@ export const FilterItems: React.FC<FilterItemsCardProps> = (filter: FilterItemsC
         : selectedItems.filter(item => item !== value);
 
       setSelectedItems(updated);
-
       // Enviar a string separada por vírgulas para o backend (ou componente pai)
       const csvString = updated.join(",");
       filter.onSelectionChange?.(csvString);
