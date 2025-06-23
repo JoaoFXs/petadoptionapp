@@ -96,6 +96,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
 
   
   async function searchPets() {
+    console.log(">>" + query)
     const resultPets = await usePet.search(query.trim(), available);
     setPets(resultPets);
   }
@@ -194,18 +195,16 @@ const Available: React.FC<AvailablePetsProps> = () => {
                       </button>
 
                       {/* Localizações disponiveis */}
-                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'   onSelectionChange={(csv) => { console.log("Enviar para backend:", csv);}}></FilterItems>
+                      <FilterItems arrowIcon={toggles.locations} itemLabelKey="city" listItems={locations} onClick={toggleLocations} labelText='Locations'   onSelectionChange={(csv) => { setQuery(csv); console.log(csv)}}></FilterItems>
                       {/* Filtro Available */}
-                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'  onSelectionChange={(csv) => { console.log("Enviar para backend:", csv);}}></FilterItems>
+                      <FilterItems arrowIcon={toggles.available}  listItems={availableDescription} onClick={() => toggle('available')} labelText='Available'  onSelectionChange={(csv) => {setQuery(csv); console.log(csv)}}></FilterItems>
                       {/*  */}
                       <FilterItems arrowIcon={toggles.breed}  listItems={breed} onClick={toggleBreed} labelText='Breed'></FilterItems>
-            
                      <FilterItems arrowIcon={toggles.age}  listItems={age} onClick={toggleAge} labelText='Age'></FilterItems>
                      <FilterItems arrowIcon={toggles.type}  listItems={type} onClick={toggleType} labelText='Type'></FilterItems>
                      <FilterItems arrowIcon={toggles.sex}  listItems={sex} onClick={toggleSex} labelText='Sex'></FilterItems>
-                      <FilterItems arrowIcon={toggles.size}  listItems={size} onClick={toggleSize} labelText='Size'></FilterItems>
-                   <FilterItems arrowIcon={toggles.temperament}  listItems={temperament} onClick={toggleTemperament} labelText='Temperament'></FilterItems>
-            
+                     <FilterItems arrowIcon={toggles.size}  listItems={size} onClick={toggleSize} labelText='Size'></FilterItems>
+                     <FilterItems arrowIcon={toggles.temperament}  listItems={temperament} onClick={toggleTemperament} labelText='Temperament'></FilterItems>
                     </motion.div>
                   </motion.div>
                 )}
