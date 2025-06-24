@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaTimes, FaChevronDown, FaChevronRight } from 'react-ic
 import { useState } from "react";
 import { select } from "framer-motion/client";
 export class FilterItemsCardProps<T = any>{
-    onClick?:  () => void;
+    onClick?: () => void | Promise<void>;
     arrowIcon?: boolean | undefined;
     listItems?: T[];
     itemLabelKey?: keyof T; // <== chave dinâmica

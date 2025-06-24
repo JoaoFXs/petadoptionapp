@@ -22,22 +22,37 @@ const Available: React.FC<AvailablePetsProps> = () => {
       size: true,
       temperament: true
     });
+  type ToggleField = keyof typeof toggles;
 
   const [query, setQuery] = useState('');
   const [available, setAvailable] = useState<boolean | null>(null); // null = sem filtro
   const [pets, setPets] = useState<Pet[]>([]);
   const usePet = usePetService();
   const [locations, setLocations] = useState<LocationsMap[]>([]);
-  const [breed, setBreed] = useState<string[]>([]);
-  const [age, setAge] = useState<string[]>([]);
-    const [temperament, setTemperament] = useState<string[]>([]);
-  const [size, setSize] = useState<string[]>([]);
-  const [type, setType] = useState<string[]>([]);
-    const [sex, setSex] = useState<string[]>([]);
-  const [availableDescription, setAvailableDescription] = useState<string[]>(["Available","Not Available"]);
   const [showFilters, setShowFilters] = useState(false);
   const useCommons = useCommonService();
+
 const [filters, setFilters] = useState<{
+  city: string[],
+  available: string[],
+  breed: string[],
+  age: string[],
+  type: string[],
+  sex: string[],
+  size: string[],
+  temperament: string[]
+}>({
+  city: [],
+  available: [],
+  breed: [],
+  age: [],
+  type: [],
+  sex: [],
+  size: [],
+  temperament: []
+});
+
+const [returnValues, setReturnValues] = useState<{
   city: string[],
   available: string[],
   breed: string[],
@@ -75,9 +90,16 @@ async function searchPetsByInput() {
     setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  async function toggleFilters(filterfield: string){
+  async function toggleFilters(filterfield: ToggleField) {
+    toggle(filterfield);
+    const data = await useCommons.findQueryValues(filterfield);
 
+    setReturnValues((prev) => ({
+      ...prev,
+      [filterfield]: data // <- chave dinâmica correta
+    }));
   }
+
 
   async function toggleLocations(){
      toggle('locations'); // alterna o estado
@@ -85,50 +107,9 @@ async function searchPetsByInput() {
     const data = await useCommons.findAllLocations();
     setLocations(data);
   }
-
-    async function toggleBreed(){
-     toggle('breed'); // alterna o estado
-      const data = await useCommons.findQueryValues("breed");
-     setBreed(data);
-    }
-
-    async function toggleSize(){
-     toggle('size'); // alterna o estado
-
-      const data = await useCommons.findQueryValues("size");
-     setSize(data);
-    }
-
-    async function toggleTemperament(){
-     toggle('temperament'); // alterna o estado
-
-      const data = await useCommons.findQueryValues("temperament");
-     setTemperament(data);
-    }
-    async function toggleType(){
-     toggle('type'); // alterna o estado
-
-      const data = await useCommons.findQueryValues("type");
-     setType(data);
-    }
-    async function toggleAge(){
-     toggle('age'); // alterna o estado
-
-      const data = await useCommons.findQueryValues("age");
-     setAge(data);
-    }
-
-    async function toggleSex(){
-     toggle('sex'); // alterna o estado
-
-      const data = await useCommons.findQueryValues("sex");
-     setSex(data);
-    }
    function openFilters(){
     setShowFilters((prev) => !prev);
   }
-
-  
 async function searchPets() {
   // junta todos os filtros em uma única string separada por vírgula
   const allValues = Object.values(filters).flat().join(',');
@@ -136,9 +117,6 @@ async function searchPets() {
   const resultPets = await usePet.search(allValues.trim(), available);
   setPets(resultPets);
 }
-
-
-
   function renderPetsCard(pet: Pet) {
     return (
       <PetCard
@@ -241,12 +219,12 @@ async function searchPets() {
 
      
 
-                      <FilterItems labelText='Breed' listItems={breed} arrowIcon={toggles.breed} onClick={toggleBreed} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
-                      <FilterItems labelText='Age' listItems={age} arrowIcon={toggles.age} onClick={toggleAge} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
-                      <FilterItems labelText='Type' listItems={type} arrowIcon={toggles.type} onClick={toggleType} onSelectionChange={(csv) => onSelectionChange("type", csv)} />
-                      <FilterItems labelText='Sex' listItems={sex} arrowIcon={toggles.sex} onClick={toggleSex} onSelectionChange={(csv) => onSelectionChange("sex", csv)} />
-                      <FilterItems labelText='Size' listItems={size} arrowIcon={toggles.size} onClick={toggleSize} onSelectionChange={(csv) => onSelectionChange("size", csv)} />
-                      <FilterItems labelText='Temperament' listItems={temperament} arrowIcon={toggles.temperament} onClick={toggleTemperament} onSelectionChange={(csv) => onSelectionChange("temperament", csv)} />
+                      <FilterItems labelText='Breed' listItems={returnValues.breed} arrowIcon={toggles.breed} onClick={() => toggleFilters('breed')} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
+                      <FilterItems labelText='Age' listItems={returnValues.age} arrowIcon={toggles.age} onClick={() => toggleFilters('age')} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
+                      <FilterItems labelText='Type' listItems={returnValues.type} arrowIcon={toggles.type} onClick={() => toggleFilters('type')} onSelectionChange={(csv) => onSelectionChange("type", csv)} />
+                      <FilterItems labelText='Sex' listItems={returnValues.sex} arrowIcon={toggles.sex} onClick={() => toggleFilters('sex')} onSelectionChange={(csv) => onSelectionChange("sex", csv)} />
+                      <FilterItems labelText='Size' listItems={returnValues.size} arrowIcon={toggles.size} onClick={() => toggleFilters('size')} onSelectionChange={(csv) => onSelectionChange("size", csv)} />
+                      <FilterItems labelText='Temperament' listItems={returnValues.temperament} arrowIcon={toggles.temperament} onClick={() => toggleFilters('temperament')} onSelectionChange={(csv) => onSelectionChange("temperament", csv)} />
 
                     <button
                       onClick={searchPets}
