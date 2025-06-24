@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
+
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdCancel } from "react-icons/md"; 
@@ -12,6 +14,7 @@ import { LuRuler } from "react-icons/lu";
 import { MdPets } from "react-icons/md";
 import { LocationsMap, useCommonService } from '@/resources';
 export class PetCardProps {
+  petId?: string;
   name?: string;
   url?: string;
   breed?: string;
@@ -42,6 +45,8 @@ export class PetCardProps {
 }
 
 export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
+  const router = useRouter();
+  
   const [showDetails, setShowDetails] = useState(false);
 
   const openPetDetails = () => setShowDetails(prev => !prev);
@@ -64,6 +69,10 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
     return pet.sex == "MALE" ? <FaMars className=' text-blue-300 '/> : <FaVenus className='text-pink-300'/>;
  
   }
+
+function openInfo() { // use um nome qualquer
+  router.push("/available/petinfo/" + pet.petId);
+}
   const booleanIcon = (val: boolean) => (
   val ? <FaCheck className="text-green-500 mr-1" /> : <FaTimes className="text-red-500 mr-1" />
 );
@@ -165,7 +174,7 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
                       )}
                     </div>
 
-                    <button
+                    <button onClick={openInfo}
                       className="mt-6 self-stretch bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all font-medium shadow-md"
                     >
                       Adopt this Pet

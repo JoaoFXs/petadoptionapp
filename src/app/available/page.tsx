@@ -136,6 +136,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
     return (
       <PetCard
         key={pet?.id}
+        petId={pet?.id}
         name={pet?.name}
         url={pet?.url}
         breed={pet?.breed}
