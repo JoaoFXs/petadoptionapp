@@ -2,7 +2,7 @@
 import { FilterItems, InputText, Template } from '@/components';
 import React, { useState } from 'react';
 import { usePetService } from '@/resources/pet/pet.service';
-import { Button, PetCard,  } from '@/components';
+import { Button, PetCard, } from '@/components';
 import { Pet, LocationsMap } from '@/resources';
 import { useCommonService } from '@/resources';
 import { FaMapMarkerAlt, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
@@ -12,146 +12,161 @@ export interface AvailablePetsProps {
 }
 
 const Available: React.FC<AvailablePetsProps> = () => {
-    const [toggles, setToggles] = useState({
-      locations: true,
-      available: true,
-      breed: true,
-      age: true,
-      type: true,
-      sex: true,
-      size: true,
-      temperament: true
-    });
+
   type ToggleField = keyof typeof toggles;
 
+  /* Use State para registrar query para o backend*/
   const [query, setQuery] = useState('');
-  const [available, setAvailable] = useState<boolean | null>(null); // null = sem filtro
+  /* Use State para capturar os Pet's*/
   const [pets, setPets] = useState<Pet[]>([]);
-  const usePet = usePetService();
+  /* Use State para capturar as Localizações. Criei um separado por conta da complexidade do mapeamento da localização's*/
   const [locations, setLocations] = useState<LocationsMap[]>([]);
+  /* Use State para definir se o modal dos filtros aparecerá ou não*/
   const [showFilters, setShowFilters] = useState(false);
+  /* Serviço para API de pets's*/
+  const usePet = usePetService();
+  /* Serviço para API commons's*/
   const useCommons = useCommonService();
 
-const [filters, setFilters] = useState<{
-  city: string[],
-  available: string[],
-  breed: string[],
-  age: string[],
-  type: string[],
-  sex: string[],
-  size: string[],
-  temperament: string[]
-}>({
-  city: [],
-  available: [],
-  breed: [],
-  age: [],
-  type: [],
-  sex: [],
-  size: [],
-  temperament: []
-});
+  /* Use State com todos possiveis filtros */
+  const [filters, setFilters] = useState<{
+    city: string[],
+    available: string[],
+    breed: string[],
+    age: string[],
+    type: string[],
+    sex: string[],
+    size: string[],
+    temperament: string[]
+  }>({
+    city: [],
+    available: [],
+    breed: [],
+    age: [],
+    type: [],
+    sex: [],
+    size: [],
+    temperament: []
+  });
+  /* Use State para controlar seta dos filtros */
+  const [toggles, setToggles] = useState({
+    locations: true,
+    available: true,
+    breed: true,
+    age: true,
+    type: true,
+    sex: true,
+    size: true,
+    temperament: true
+  });
+  /* Use State para registrar valores retornados do commons para usar na listagens dos filtros */
+  const [returnValues, setReturnValues] = useState<{
+    city: string[],
+    available: string[],
+    breed: string[],
+    age: string[],
+    type: string[],
+    sex: string[],
+    size: string[],
+    temperament: string[]
+  }>({
+    city: [],
+    available: [],
+    breed: [],
+    age: [],
+    type: [],
+    sex: [],
+    size: [],
+    temperament: []
+  });
 
-const [returnValues, setReturnValues] = useState<{
-  city: string[],
-  available: string[],
-  breed: string[],
-  age: string[],
-  type: string[],
-  sex: string[],
-  size: string[],
-  temperament: string[]
-}>({
-  city: [],
-  available: [],
-  breed: [],
-  age: [],
-  type: [],
-  sex: [],
-  size: [],
-  temperament: []
-});
+  /* Função que recebe os valores de filterItems e vai populando o conteudo do setFilters para ser utilizado mais tarde em searchPets  */
+  function onSelectionChange(key: keyof typeof filters, valueCSV: string) {
+    const values = valueCSV.split(',').map(v => v.trim()).filter(Boolean);
+    setFilters(prev => ({
+      ...prev,
+      [key]: values
+    }));
 
-function onSelectionChange(key: keyof typeof filters, valueCSV: string) {
-   
-  const values = valueCSV.split(',').map(v => v.trim()).filter(Boolean);
-  setFilters(prev => ({
-    ...prev,
-    [key]: values
-  }));
-
-}
-async function searchPetsByInput() {
-    const resultPets = await usePet.search(query.trim(), available);
-    setPets(resultPets);
   }
 
+  /* Função toggle que tem a função de receber qual campo utilizara e seta-lo como true ou false*/
   const toggle = (key: keyof typeof toggles) => {
     setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
-
+  /* Função toggleFilters que tem a função de trocar o estado pela função toggle e retornar os valores do commons para ser utilizado na listagem do filtro*/
   async function toggleFilters(filterfield: ToggleField) {
     toggle(filterfield);
     const data = await useCommons.findQueryValues(filterfield);
 
     setReturnValues((prev) => ({
       ...prev,
-      [filterfield]: data // <- chave dinâmica correta
+      [filterfield]: data
     }));
   }
 
-
-  async function toggleLocations(){
-     toggle('locations'); // alterna o estado
-
+  /* Função toggleFilters que tem a função de trocar o estado pela função toggle e retornar os valores do commons de locations para ser utilizado na listagem do filtro*/
+  async function toggleLocations() {
+    toggle('locations'); // alterna o estado
     const data = await useCommons.findAllLocations();
     setLocations(data);
   }
-   function openFilters(){
+
+
+  /* Função para mudar o estado de showFilters para mostrar o modal*/
+  function openFilters() {
     setShowFilters((prev) => !prev);
   }
-async function searchPets() {
-  // junta todos os filtros em uma única string separada por vírgula
-  const allValues = Object.values(filters).flat().join(',');
-  console.log(">>", allValues);
-  const resultPets = await usePet.search(allValues.trim(), available);
-  setPets(resultPets);
-}
+
+  /* Função para retornar pets atraves do filtro*/
+  async function searchPets() {
+    // junta todos os filtros em uma única string separada por vírgula
+    const allValues = Object.values(filters).flat().join(',');
+    const resultPets = await usePet.search(allValues.trim());
+    setPets(resultPets);
+  }
+  /* Função para retornar pets atraves do input*/
+  async function searchPetsByInput() {
+    const resultPets = await usePet.search(query.trim());
+    setPets(resultPets);
+
+  }
+  /* Função para criar os cards dos pets*/
   function renderPetsCard(pet: Pet) {
     return (
       <PetCard
-            key={pet?.id}
-            name={pet?.name}
-            url={pet?.url}
-            breed={pet?.breed}
-            age={pet?.age}
-            type={pet?.type}
-            sex={pet?.sex}
-            size={pet?.size}
-            weight={pet?.weight}
-            photo={pet?.photo}
-            neutered={pet?.neutered}
-            vaccinated={pet?.vaccinated}
-            dewormed={pet?.dewormed}
-            diseases={pet?.diseases}
-            specialNeeds={pet?.specialNeeds}
-            temperament={pet?.temperament}
-            socialWith={pet?.socialWith}
-            available={pet?.available}
-            city={pet?.city}
-            address={pet?.address}
-            cep={pet?.address}
-            province={pet?.province}
-            adoptedByUser={pet?.adoptedByUser}
-            adoptionDate={pet?.adoptionDate}
-            history={pet?.history}
-            microchip={pet?.microchip}
-            notes={pet?.notes}
-            tags={pet?.tags}
-          />
+        key={pet?.id}
+        name={pet?.name}
+        url={pet?.url}
+        breed={pet?.breed}
+        age={pet?.age}
+        type={pet?.type}
+        sex={pet?.sex}
+        size={pet?.size}
+        weight={pet?.weight}
+        photo={pet?.photo}
+        neutered={pet?.neutered}
+        vaccinated={pet?.vaccinated}
+        dewormed={pet?.dewormed}
+        diseases={pet?.diseases}
+        specialNeeds={pet?.specialNeeds}
+        temperament={pet?.temperament}
+        socialWith={pet?.socialWith}
+        available={pet?.available}
+        city={pet?.city}
+        address={pet?.address}
+        cep={pet?.address}
+        province={pet?.province}
+        adoptedByUser={pet?.adoptedByUser}
+        adoptionDate={pet?.adoptionDate}
+        history={pet?.history}
+        microchip={pet?.microchip}
+        notes={pet?.notes}
+        tags={pet?.tags}
+      />
     );
   }
-
+  /* Função para renderizar os pets atraves dos cards*/
   function renderPets() {
     return pets.map(renderPetsCard);
   }
@@ -177,54 +192,51 @@ async function searchPets() {
             >
               Search
             </button>
-              <button onClick={openFilters} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
-                  <FaMapMarkerAlt />
-                  Filters
-              </button>
-                
+            <button onClick={openFilters} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
+              <FaMapMarkerAlt />
+              Filters
+            </button>
 
             {/* Aqui começa o filtro*/}
-              <AnimatePresence>
-                {showFilters && (
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+                >
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl flex flex-col flex-wrap md:flex-row relative z-50"
                   >
-                    <motion.div
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.9, opacity: 0 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl flex flex-col flex-wrap md:flex-row relative z-50"
+
+                    {/* Botão de fechar dos filtros*/}
+                    <button
+                      className="absolute top-3 right-4 text-gray-600 hover:text-black"
+                      onClick={openFilters}
                     >
+                      <FaTimes />
+                    </button>
 
-                      {/* Botão de fechar dos filtros*/}
-                      <button
-                        className="absolute top-3 right-4 text-gray-600 hover:text-black"
-                        onClick={openFilters}
-                      >
-                        <FaTimes />
-                      </button>
+                    <FilterItems
+                      arrowIcon={toggles.locations}
+                      itemLabelKey="city"
+                      listItems={locations}
+                      onClick={toggleLocations}
+                      labelText='Locations'
+                      onSelectionChange={(csv) => onSelectionChange("city", csv)}
+                    />
 
-                    <FilterItems 
-                        arrowIcon={toggles.locations} 
-                        itemLabelKey="city" 
-                        listItems={locations} 
-                        onClick={toggleLocations} 
-                        labelText='Locations' 
-                        onSelectionChange={(csv) => onSelectionChange("city", csv)} 
-                      />
-
-     
-
-                      <FilterItems labelText='Breed' listItems={returnValues.breed} arrowIcon={toggles.breed} onClick={() => toggleFilters('breed')} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
-                      <FilterItems labelText='Age' listItems={returnValues.age} arrowIcon={toggles.age} onClick={() => toggleFilters('age')} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
-                      <FilterItems labelText='Type' listItems={returnValues.type} arrowIcon={toggles.type} onClick={() => toggleFilters('type')} onSelectionChange={(csv) => onSelectionChange("type", csv)} />
-                      <FilterItems labelText='Sex' listItems={returnValues.sex} arrowIcon={toggles.sex} onClick={() => toggleFilters('sex')} onSelectionChange={(csv) => onSelectionChange("sex", csv)} />
-                      <FilterItems labelText='Size' listItems={returnValues.size} arrowIcon={toggles.size} onClick={() => toggleFilters('size')} onSelectionChange={(csv) => onSelectionChange("size", csv)} />
-                      <FilterItems labelText='Temperament' listItems={returnValues.temperament} arrowIcon={toggles.temperament} onClick={() => toggleFilters('temperament')} onSelectionChange={(csv) => onSelectionChange("temperament", csv)} />
+                    <FilterItems labelText='Breed' listItems={returnValues.breed} arrowIcon={toggles.breed} onClick={() => toggleFilters('breed')} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
+                    <FilterItems labelText='Age' listItems={returnValues.age} arrowIcon={toggles.age} onClick={() => toggleFilters('age')} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
+                    <FilterItems labelText='Type' listItems={returnValues.type} arrowIcon={toggles.type} onClick={() => toggleFilters('type')} onSelectionChange={(csv) => onSelectionChange("type", csv)} />
+                    <FilterItems labelText='Sex' listItems={returnValues.sex} arrowIcon={toggles.sex} onClick={() => toggleFilters('sex')} onSelectionChange={(csv) => onSelectionChange("sex", csv)} />
+                    <FilterItems labelText='Size' listItems={returnValues.size} arrowIcon={toggles.size} onClick={() => toggleFilters('size')} onSelectionChange={(csv) => onSelectionChange("size", csv)} />
+                    <FilterItems labelText='Temperament' listItems={returnValues.temperament} arrowIcon={toggles.temperament} onClick={() => toggleFilters('temperament')} onSelectionChange={(csv) => onSelectionChange("temperament", csv)} />
 
                     <button
                       onClick={searchPets}
@@ -233,11 +245,11 @@ async function searchPets() {
                     >
                       Search
                     </button>
-                   
-                    </motion.div>
+
                   </motion.div>
-                )}
-              </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
