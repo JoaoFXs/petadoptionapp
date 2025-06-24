@@ -58,14 +58,15 @@ const [filters, setFilters] = useState<{
 });
 
 function onSelectionChange(key: keyof typeof filters, valueCSV: string) {
+   
   const values = valueCSV.split(',').map(v => v.trim()).filter(Boolean);
   setFilters(prev => ({
     ...prev,
     [key]: values
   }));
+  
 }
 async function searchPetsByInput() {
-    console.log(">>" + query)
     const resultPets = await usePet.search(query.trim(), available);
     setPets(resultPets);
   }
@@ -235,13 +236,7 @@ async function searchPets() {
                         onSelectionChange={(csv) => onSelectionChange("city", csv)} 
                       />
 
-                      <FilterItems 
-                        arrowIcon={toggles.available}  
-                        listItems={availableDescription} 
-                        onClick={() => toggle('available')} 
-                        labelText='Available'  
-                        onSelectionChange={(csv) => onSelectionChange("available", csv)} 
-                      />
+     
 
                       <FilterItems labelText='Breed' listItems={breed} arrowIcon={toggles.breed} onClick={toggleBreed} onSelectionChange={(csv) => onSelectionChange("breed", csv)} />
                       <FilterItems labelText='Age' listItems={age} arrowIcon={toggles.age} onClick={toggleAge} onSelectionChange={(csv) => onSelectionChange("age", csv)} />
