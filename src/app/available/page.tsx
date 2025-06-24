@@ -64,7 +64,7 @@ function onSelectionChange(key: keyof typeof filters, valueCSV: string) {
     ...prev,
     [key]: values
   }));
-  
+
 }
 async function searchPetsByInput() {
     const resultPets = await usePet.search(query.trim(), available);
@@ -75,6 +75,10 @@ async function searchPetsByInput() {
     setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  async function toggleFilters(filterfield: string){
+
+  }
+
   async function toggleLocations(){
      toggle('locations'); // alterna o estado
 
@@ -84,41 +88,40 @@ async function searchPetsByInput() {
 
     async function toggleBreed(){
      toggle('breed'); // alterna o estado
-
-      const data = await useCommons.findAllBreed();
+      const data = await useCommons.findQueryValues("breed");
      setBreed(data);
     }
 
     async function toggleSize(){
      toggle('size'); // alterna o estado
 
-      const data = await useCommons.findAllSize();
+      const data = await useCommons.findQueryValues("size");
      setSize(data);
     }
 
-        async function toggleTemperament(){
+    async function toggleTemperament(){
      toggle('temperament'); // alterna o estado
 
-      const data = await useCommons.findAllTemperament();
+      const data = await useCommons.findQueryValues("temperament");
      setTemperament(data);
     }
     async function toggleType(){
      toggle('type'); // alterna o estado
 
-      const data = await useCommons.findAllType();
+      const data = await useCommons.findQueryValues("type");
      setType(data);
     }
     async function toggleAge(){
      toggle('age'); // alterna o estado
 
-      const data = await useCommons.findAllAges();
+      const data = await useCommons.findQueryValues("age");
      setAge(data);
     }
 
     async function toggleSex(){
      toggle('sex'); // alterna o estado
 
-      const data = await useCommons.findAllSex();
+      const data = await useCommons.findQueryValues("sex");
      setSex(data);
     }
    function openFilters(){
