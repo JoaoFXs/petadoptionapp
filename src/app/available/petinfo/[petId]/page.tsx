@@ -1,10 +1,10 @@
 'use client'
 
-import { Template } from "@/components";
+import { Template, Loading } from "@/components";
 import { usePetService } from '@/resources/pet/pet.service';
 import React, { useState, useEffect } from 'react';
 import { Pet } from "@/resources";
-
+ 
 export interface PetInfoProps {
   params: Promise<{
     petId: string;
@@ -83,11 +83,9 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
   return (
     <Template>
       <div className="flex flex-col items-center min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : pet ? (
+       
+       <Loading condition={loading}>
+               { pet ? (
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-4xl">
             <div className="flex flex-col md:flex-row">
               {/* Container da imagem - proporção corrigida */}
@@ -339,6 +337,8 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
             </p>
           </div>
         )}
+       </Loading>
+
       </div>
     </Template>
   );

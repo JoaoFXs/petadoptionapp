@@ -5,3 +5,4 @@ export { useNotification } from './notification'
 export { FieldError } from './tools/FieldError';
 export { PetCard } from './availablePage/PetCard'
 export { FilterItems } from './availablePage/filterItems'
+export { Loading } from './tools/loading'
