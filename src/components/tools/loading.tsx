@@ -1,4 +1,4 @@
-
+import { MdPets } from "react-icons/md";
 export interface LoadingProps{
     children?: React.ReactNode;
         condition?: boolean;
@@ -7,9 +7,12 @@ export interface LoadingProps{
 
 export const Loading: React.FC<LoadingProps> = ({children, condition, conditionPet}) =>{
     if (condition) {
-        return (<div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                </div>)
+        return (<div className="animate-spin">
+            <MdPets className="text-green-700 size-10"/>
+            <MdPets className="text-yellow-500 size-10 rotate-180" />
+
+        </div>
+)
     }else {
        return <>{children}</>;
     }
