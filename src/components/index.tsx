@@ -6,3 +6,4 @@ export { FieldError } from './tools/FieldError';
 export { PetCard } from './availablePage/PetCard'
 export { FilterItems } from './availablePage/filterItems'
 export { Loading } from './tools/loading'
+export { NotFound } from './tools/notfound'

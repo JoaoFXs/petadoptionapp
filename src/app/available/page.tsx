@@ -1,8 +1,8 @@
 'use client';
-import { FilterItems, InputText, Template } from '@/components';
+import { FilterItems, InputText, NotFound, Template } from '@/components';
 import React, { useState } from 'react';
 import { usePetService } from '@/resources/pet/pet.service';
-import { Button, PetCard, } from '@/components';
+import { Button, PetCard, Loading} from '@/components';
 import { Pet, LocationsMap } from '@/resources';
 import { useCommonService } from '@/resources';
 import { FaMapMarkerAlt, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
@@ -27,7 +27,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   const usePet = usePetService();
   /* Serviço para API commons's*/
   const useCommons = useCommonService();
-
+  const [loading, setLoading] = useState(false);
   /* Use State com todos possiveis filtros */
   const [filters, setFilters] = useState<{
     city: string[],
@@ -121,20 +121,24 @@ const Available: React.FC<AvailablePetsProps> = () => {
   /* Função para retornar pets atraves do filtro*/
   async function searchPets() {
     // junta todos os filtros em uma única string separada por vírgula
+    setLoading(false);
     const allValues = Object.values(filters).flat().join(',');
     const resultPets = await usePet.search(allValues.trim());
     setPets(resultPets);
   }
   /* Função para retornar pets atraves do input*/
   async function searchPetsByInput() {
+    setLoading(true);
     const resultPets = await usePet.search(query.trim());
+    setLoading(false);
     setPets(resultPets);
+   
 
   }
   /* Função para criar os cards dos pets*/
   function renderPetsCard(pet: Pet) {
-    return (
-      <PetCard
+
+    return(<PetCard
         key={pet?.id}
         petId={pet?.id}
         name={pet?.name}
@@ -164,18 +168,22 @@ const Available: React.FC<AvailablePetsProps> = () => {
         microchip={pet?.microchip}
         notes={pet?.notes}
         tags={pet?.tags}
-      />
-    );
+      />);
+   
   }
   /* Função para renderizar os pets atraves dos cards*/
   function renderPets() {
-    return pets.map(renderPetsCard);
-  }
+
+      return pets.map(renderPetsCard);
+   
+    }
 
 
   return (
     <Template>
+    
       <section className="py-10 px-4 max-w-7xl mx-auto">
+        
         {/* Barra de pesquisa */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center mb-10">
           <input
@@ -197,7 +205,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
               <FaMapMarkerAlt />
               Filters
             </button>
-
+  
             {/* Aqui começa o filtro*/}
             <AnimatePresence>
               {showFilters && (
@@ -253,11 +261,23 @@ const Available: React.FC<AvailablePetsProps> = () => {
             </AnimatePresence>
           </div>
         </div>
+        <Loading condition={loading}>
+        
+          {pets && pets.length > 0 ? (
+              <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                 {renderPets()}
+               </div>
+            ) : (
+              <div className="flex justify-center items-center align-middle">
+                <NotFound condition={false} />
+              </div>
+             
+            )}
 
-        <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {renderPets()}
-        </div>
+       
+        </Loading>
       </section>
+     
     </Template>
   );
 };
