@@ -74,7 +74,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
   // Manipulador de envio do formulário
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados
+    // lógica para enviar os dados
     console.log('Form data submitted:', formData);
     alert('Adoption request sent! We will contact you soon.');
     setShowAdoptionForm(false);
@@ -170,7 +170,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                             placeholder="Your full name"
                           />
                         </div>
@@ -186,7 +186,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                             placeholder="your.email@example.com"
                           />
                         </div>
@@ -204,7 +204,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                             value={formData.phone}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                             placeholder="(123) 456-7890"
                           />
                         </div>
@@ -218,7 +218,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                             name="experience"
                             value={formData.experience}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                           >
                             <option value="">Select your experience</option>
                             <option value="none">No previous experience</option>
@@ -238,7 +238,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                             name="residenceType"
                             value={formData.residenceType}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                           >
                             <option value="apartment">Apartment</option>
                             <option value="house">House</option>
@@ -251,7 +251,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Do you have children?
                           </label>
-                          <div className="flex space-x-4 mt-2">
+                          <div className="text-gray-500 flex space-x-4 mt-2">
                             <label className="inline-flex items-center">
                               <input
                                 type="radio"
@@ -288,7 +288,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                           rows={4}
                           value={formData.message}
                           onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                          className="text-gray-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                           placeholder="Tell us about yourself and why you'd be a great pet parent..."
                         />
                       </div>
@@ -303,7 +303,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                         </button>
                         <button
                           type="submit"
-                          className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition shadow-md hover:shadow-lg"
+                          className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:green-blue-600 hover:to-green-700 transition shadow-md hover:shadow-lg"
                         >
                           Submit Application
                         </button>
@@ -313,7 +313,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
                     <div className="text-center py-6">
                       <button 
                         onClick={() => setShowAdoptionForm(true)}
-                        className="w-full max-w-md mx-auto bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        className="w-full max-w-md mx-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                       >
                         I want to adopt {pet.name}
                       </button>
