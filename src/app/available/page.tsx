@@ -264,12 +264,25 @@ const Available: React.FC<AvailablePetsProps> = () => {
         </div>
         <Loading condition={loading}>
         
-          {pets && pets.length > 0 ? (
+          {pets.length > 0 ? (
               <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                  {renderPets()}
                </div>
             ) : (
-              <div className="flex justify-center items-center align-middle">
+              <NotFound/>
+            )}
+
+       
+        </Loading>
+      </section>
+     
+    </Template>
+  );
+};
+
+const NotFound = () => {
+    return (
+      <div className="flex justify-center items-center align-middle">
                       <div className="text-center">
                         <div className="mx-auto bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center mb-4">
                           <svg
@@ -292,15 +305,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
                         </p>
                       </div>
               </div>
-             
-            )}
-
-       
-        </Loading>
-      </section>
-     
-    </Template>
-  );
+    );
 };
 
 export default Available;
