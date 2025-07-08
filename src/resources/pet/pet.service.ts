@@ -10,9 +10,9 @@ async search(query: string = "", available?: boolean | null ): Promise<Pet[]> {
 
   const params: string[] = [];
 
-  if (query.trim() !== "") {
+  
     params.push(`query=${encodeURIComponent(query)}`);
-  }
+  
 
   if (available !== null && available !== undefined) {
     params.push(`available=${available.toString()}`);
