@@ -29,6 +29,8 @@ const Available: React.FC<AvailablePetsProps> = () => {
   /* Serviço para API commons's*/
   const useCommons = useCommonService();
   const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+
   /* Use State com todos possiveis filtros */
   const [filters, setFilters] = useState<{
     city: string[],
@@ -123,6 +125,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   async function searchPets() {
     // junta todos os filtros em uma única string separada por vírgula
     setLoading(false);
+    setSearched(true);
     const allValues = Object.values(filters).flat().join(',');
     const resultPets = await usePet.search(allValues.trim());
     setPets(resultPets);
@@ -130,6 +133,7 @@ const Available: React.FC<AvailablePetsProps> = () => {
   /* Função para retornar pets atraves do input*/
   async function searchPetsByInput() {
     setLoading(true);
+     setSearched(true);
     const resultPets = await usePet.search(query.trim());
     setLoading(false);
     setPets(resultPets);
@@ -262,18 +266,22 @@ const Available: React.FC<AvailablePetsProps> = () => {
             </AnimatePresence>
           </div>
         </div>
-        <Loading condition={loading}>
-        
-          {pets.length > 0 ? (
-              <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                 {renderPets()}
-               </div>
-            ) : (
-              <NotFound/>
-            )}
 
-       
-        </Loading>
+       <Loading condition={loading}>
+          {!searched ? (
+            <div className="text-center mt-12">
+              <h2 className="text-2xl font-semibold text-gray-800">Find a new paw!</h2>
+              <p className="text-gray-500 mt-2">Use the search bar or filters to find pets available for adoption.</p>
+            </div>
+          ) : pets.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {renderPets()}
+            </div>
+          ) : (
+            <NotFound />
+          )}
+       </Loading>
+
       </section>
      
     </Template>
