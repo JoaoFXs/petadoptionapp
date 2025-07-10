@@ -12,7 +12,7 @@ import {
 import { GiHighShot, GiSelfLove } from "react-icons/gi";
 import { LuRuler } from "react-icons/lu";
 import { MdPets } from "react-icons/md";
-import { LocationsMap, useCommonService } from '@/resources';
+import { LocationsMap, useAuth, useCommonService } from '@/resources';
 export class PetCardProps {
   petId?: string;
   name?: string;
@@ -46,7 +46,8 @@ export class PetCardProps {
 
 export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
   const router = useRouter();
-  
+  const auth = useAuth();
+
   const [showDetails, setShowDetails] = useState(false);
 
   const openPetDetails = () => setShowDetails(prev => !prev);

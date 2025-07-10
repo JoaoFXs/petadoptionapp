@@ -1,6 +1,6 @@
 'use client'
 
-import { Template, Loading } from "@/components";
+import { Template, Loading, AuthenticatedPage } from "@/components";
 import { usePetService } from '@/resources/pet/pet.service';
 import React, { useState, useEffect } from 'react';
 import { Pet } from "@/resources";
@@ -81,6 +81,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
   };
 
   return (
+    <AuthenticatedPage>
     <Template>
       <div className="flex flex-col items-center min-h-screen py-8 px-4 sm:px-6 lg:px-8">
        
@@ -341,6 +342,7 @@ const PetInfo: React.FC<PetInfoProps> = ({ params }) => {
 
       </div>
     </Template>
+    </AuthenticatedPage>
   );
 };
 
