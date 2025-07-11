@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { RenderIf, InputText, Button, useNotification, FieldError } from '@/components';
 import { LoginForm, signupValidationScheme, loginValidationScheme, formScheme } from './formScheme';
@@ -22,41 +21,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
   }
 
   async function onSubmit(values: LoginForm) {
-    if (!newUserState) {
-      const credentials: Credentials = { email: values.email, password: values.password };
-      try {
-        const response: AccessToken = await auth.authenticate(credentials);
-        auth.initSession(response);
-        notification.notify('Login success', 'success');
-        closeModal();
-      } catch (error: any) {
-        notification.notify(error?.message, 'error');
-      }
-    } else {
-      const user: User = { 
-        photo: values.photo, 
-        username: values.username, 
-        email: values.email, 
-        password: values.password 
-      };
-      
-      try {
-        const formData = new FormData();
-        formData.append("username", values.username);
-        formData.append("email", values.email);
-        formData.append("password", values.password);
-        if (values.photo) {
-          formData.append("photo", values.photo);
-        }
-        
-        await auth.save(formData);
-        notification.notify('User created successfully', 'success');
-        resetForm();
-        closeModal();
-      } catch (error: any) {
-        notification.notify(error?.message, 'error');
-      }
-    }
+    // ... (mantenha sua lógica de submit existente)
   }
 
   const { values, handleChange, handleSubmit, errors, resetForm } = useFormik<LoginForm>({
@@ -65,26 +30,35 @@ export default function Login({ isOpen, onClose }: LoginProps) {
     onSubmit: onSubmit
   });
 
-  return (
-    isOpen && (
-      <div 
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-        onClick={(e) => e.target === e.currentTarget && closeModal()}
-      >
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
-          <button
-            onClick={closeModal}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl"
-          >
-            ×
-          </button>
+  // Adicione esta função para evitar que o clique no formulário feche o modal
+  const handleFormClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
-          <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-gray-900 mb-4">
-            {newUserState ? 'Create New User' : 'Login to Your Account'}
-          </h2>
-              
-                  <form onSubmit={handleSubmit} className="space-y-4"> 
-                    
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div 
+        className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative"
+        onClick={handleFormClick} // Impede que o clique no formulário feche o modal
+      >
+        <button
+          onClick={closeModal}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl"
+          aria-label="Fechar modal"
+        >
+          ×
+        </button>
+
+        <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-gray-900 mb-4">
+          {newUserState ? 'Create New User' : 'Login to Your Account'}
+        </h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+            
                     {/** Photo register and preview */}
                     <RenderIf condition={newUserState}>   
                       <div className="flex flex-col items-center gap-2">
@@ -203,9 +177,8 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                         />    
                       </RenderIf>
                     </div>
-                  </form>
-            </div>
-    </div>      
-  ));
-
+        </form>
+      </div>
+    </div>
+  );
 }
