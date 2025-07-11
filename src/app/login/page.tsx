@@ -1,85 +1,87 @@
 'use client';
 
 import { useState } from 'react';
-import { RenderIf, Template, InputText, Button, EyeButton, useNotification, FieldError} from '@/components';
-import { LoginForm, signupValidationScheme, loginValidationScheme, formScheme} from './formScheme'
-import { Credentials, AccessToken, User } from '@/resources/user/user.resource'
-import { useAuth} from '@/resources'
-import { useRouter } from 'next/navigation';
+import { RenderIf, InputText, Button, useNotification, FieldError } from '@/components';
+import { LoginForm, signupValidationScheme, loginValidationScheme, formScheme } from './formScheme';
+import { Credentials, AccessToken, User } from '@/resources/user/user.resource';
+import { useAuth } from '@/resources';
 import { useFormik } from 'formik';
-export default function Login() {
-  const [isOpen, setIsOpen] = useState(true); // Mostra o popup por padrão
-  const [newUserState, setNewUserState] = useState(false); // Estado para controlar se é um novo usuário
-  
 
+interface LoginProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function Login({ isOpen, onClose }: LoginProps) {
+  const [newUserState, setNewUserState] = useState(false);
   const auth = useAuth();
-  const router = useRouter();
   const notification = useNotification();
-  
 
-  function closeModal(){
-      setIsOpen(false);
-      router.push("/");
+  function closeModal() {
+    onClose();
   }
-  async function onSubmit(values: LoginForm){
-   
+
+  async function onSubmit(values: LoginForm) {
     if (!newUserState) {
-        const credentials: Credentials = { email: values.email, password: values.password};
-        try{
-            const response: AccessToken = await auth.authenticate(credentials);
-            auth.initSession(response);
-            console.log("Session is valid? ", auth.isSessionValid());
-            notification.notify('Login success','success');
-            router.push('/');
-        } catch (error: any) {
-            notification.notify(error?.message, 'error');
+      const credentials: Credentials = { email: values.email, password: values.password };
+      try {
+        const response: AccessToken = await auth.authenticate(credentials);
+        auth.initSession(response);
+        notification.notify('Login success', 'success');
+        closeModal();
+      } catch (error: any) {
+        notification.notify(error?.message, 'error');
       }
-    }
-    else{
-      const user: User = { photo: values.photo  ,username: values.username, email: values.email, password: values.password};
-      try{
-
+    } else {
+      const user: User = { 
+        photo: values.photo, 
+        username: values.username, 
+        email: values.email, 
+        password: values.password 
+      };
+      
+      try {
         const formData = new FormData();
-
-        formData.append("username", values.username)
-        formData.append("email", values.email)
-        formData.append("password", values.password)
-        formData.append("photo", values.photo)
+        formData.append("username", values.username);
+        formData.append("email", values.email);
+        formData.append("password", values.password);
+        if (values.photo) {
+          formData.append("photo", values.photo);
+        }
+        
         await auth.save(formData);
         notification.notify('User created successfully', 'success');
         resetForm();
-        setNewUserState(false);
-      }
-      catch (error: any) {
+        closeModal();
+      } catch (error: any) {
         notification.notify(error?.message, 'error');
       }
     }
   }
 
-  const { values, handleChange, handleSubmit, errors, resetForm }  = useFormik<LoginForm>({
+  const { values, handleChange, handleSubmit, errors, resetForm } = useFormik<LoginForm>({
     initialValues: formScheme,
     validationSchema: newUserState ? signupValidationScheme : loginValidationScheme,
     onSubmit: onSubmit
   });
-  
+
   return (
-    <div>
-      <Template>
-        {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
+    isOpen && (
+      <div 
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        onClick={(e) => e.target === e.currentTarget && closeModal()}
+      >
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl"
+          >
+            ×
+          </button>
 
-                <button
-                  onClick={closeModal}
-                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl"
-                >
-                  ×
-                </button>      
-
-          
-                <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-gray-900 mb-4">
-                    {newUserState ? 'Create New User' : 'Login to Your Account'}
-                </h2>
+          <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-gray-900 mb-4">
+            {newUserState ? 'Create New User' : 'Login to Your Account'}
+          </h2>
               
                   <form onSubmit={handleSubmit} className="space-y-4"> 
                     
@@ -203,9 +205,7 @@ export default function Login() {
                     </div>
                   </form>
             </div>
-          </div>
-        )}
-      </Template>
-    </div>
-  );
+    </div>      
+  ));
+
 }

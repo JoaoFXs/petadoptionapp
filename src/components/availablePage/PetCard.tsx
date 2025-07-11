@@ -13,6 +13,8 @@ import { GiHighShot, GiSelfLove } from "react-icons/gi";
 import { LuRuler } from "react-icons/lu";
 import { MdPets } from "react-icons/md";
 import { LocationsMap, useAuth, useCommonService } from '@/resources';
+import { AuthenticatedPage } from '../tools';
+import Login from "@/app/login/page"; 
 export class PetCardProps {
   petId?: string;
   name?: string;
@@ -47,7 +49,7 @@ export class PetCardProps {
 export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
   const router = useRouter();
   const auth = useAuth();
-
+   const [showLogin, setShowLogin] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
   const openPetDetails = () => setShowDetails(prev => !prev);
@@ -72,7 +74,12 @@ export const PetCard: React.FC<PetCardProps> = (pet: PetCardProps) => {
   }
 
 function openInfo() { // use um nome qualquer
-  router.push("/available/petinfo/" + pet.petId);
+  if(auth.isSessionValid()){
+    router.push("/available/petinfo/" + pet.petId);
+  }else{
+      setShowLogin(true); // Mostra o modal 
+  }
+ 
 }
   const booleanIcon = (val: boolean) => (
   val ? <FaCheck className="text-green-500 mr-1" /> : <FaTimes className="text-red-500 mr-1" />
@@ -185,6 +192,10 @@ function openInfo() { // use um nome qualquer
           </motion.div>
         )}
       </AnimatePresence>
+      <Login 
+                  isOpen={showLogin} 
+                  onClose={() => setShowLogin(false)} // Fecha o modal quando solicitado
+              />
     </>
   );
 };
